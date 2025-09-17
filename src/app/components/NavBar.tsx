@@ -22,7 +22,7 @@ export default function NavBar(){
                 
                 <div className="hidden md:flex">
                     <ul className="hidden sm:flex gap-15">
-                        <Link href="/Planner">
+                        <Link href="/planner">
                             <li className="uppercase hover:border-b text-xl"> Planner </li>
                         </Link>
                         <Link href="/Placeholder1">
@@ -31,7 +31,7 @@ export default function NavBar(){
                         <Link href="/Placeholder2">
                             <li className="uppercase hover:border-b text-xl"> Planceholder2</li>
                         </Link>
-                        <Link href="/Resources">
+                        <Link href="/resources">
                             <li className="uppercase hover:border-b text-xl"> Resources </li>
                         </Link>
                     </ul>

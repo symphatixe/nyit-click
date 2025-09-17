@@ -3,7 +3,7 @@ import React from 'react'
 const PlannerPage = () => {
   return (
     <div>
-      <h1></h1>
+      <h1>Planner Page</h1>
     </div>
   )
 }
