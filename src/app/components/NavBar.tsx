@@ -22,7 +22,7 @@ export default function NavBar(){
                     />
                 </Link>
                 
-                <div className="hidden md:flex">
+                <div className="hidden lg:flex">
                     <ul className="hidden sm:flex gap-15">
                         {navItems.map((item) => (
                             <li className="uppercase hover:border-b text-xl" key={item.name}>
@@ -34,7 +34,7 @@ export default function NavBar(){
                     </ul>
                 </div>
 
-                <div className="md:hidden">
+                <div className="lg:hidden">
                     <Menu />
                 </div>
                 
