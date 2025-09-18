@@ -5,6 +5,7 @@ import { useState } from "react";
 import { LuMenu } from "react-icons/lu";
 import { IoCloseCircle } from "react-icons/io5";
 import Link from 'next/link';
+import { navItems } from '../../../constants';
 
 
 
@@ -37,21 +38,13 @@ const Menu = () => {
         </div>
         <div className='flex-col py-4'>
           <ul>
-            <Link href="/">
-              <li onClick={handleMenu} className="uppercase hover:border-b text-xl py-4"> Home </li>
-            </Link>
-            <Link href="/planner">
-              <li onClick={handleMenu} className="uppercase hover:border-b text-xl py-4"> Planner </li>
-            </Link>
-            <Link onClick={handleMenu} href="/Placeholder1">
-              <li onClick={handleMenu} className="uppercase hover:border-b text-xl py-4"> Placeholder1 </li>
-            </Link>
-            <Link href="/Placeholder2">
-              <li onClick={handleMenu} className="uppercase hover:border-b text-xl py-4"> Planceholder2</li>
-            </Link>
-            <Link href="/resources">
-              <li onClick={handleMenu} className="uppercase hover:border-b text-xl py-4"> Resources </li>
-            </Link>
+            {navItems.map((item) => (
+              <li onClick={handleMenu} className="uppercase hover:border-b text-xl py-4" key={item.name}>
+                <Link href={item.href}>
+                  {item.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

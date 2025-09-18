@@ -2,6 +2,8 @@ import Link from "next/link";
 import globe from "../../../public/globe.svg";
 import Image from "next/image";
 import Menu from "./Menu";
+import { navItems } from "../../../constants";
+
 
 
 export default function NavBar(){
@@ -22,18 +24,13 @@ export default function NavBar(){
                 
                 <div className="hidden md:flex">
                     <ul className="hidden sm:flex gap-15">
-                        <Link href="/planner">
-                            <li className="uppercase hover:border-b text-xl"> Planner </li>
-                        </Link>
-                        <Link href="/Placeholder1">
-                            <li className="uppercase hover:border-b text-xl"> Placeholder1 </li>
-                        </Link>
-                        <Link href="/Placeholder2">
-                            <li className="uppercase hover:border-b text-xl"> Planceholder2</li>
-                        </Link>
-                        <Link href="/resources">
-                            <li className="uppercase hover:border-b text-xl"> Resources </li>
-                        </Link>
+                        {navItems.map((item) => (
+                            <li className="uppercase hover:border-b text-xl" key={item.name}>
+                                <Link href={item.href}>
+                                    {item.name}
+                                </Link>
+                            </li>
+                        ))}
                     </ul>
                 </div>
 
