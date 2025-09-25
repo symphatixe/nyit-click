@@ -26,7 +26,7 @@ const Menu = () => {
       </div>
       <div className={
         openMenu
-          ? "fixed left-0 top-0 w-[65%] md:hidden h-screen bg-[#f0eada] pt-6 px-5 ease-in duration-500"
+          ? "fixed left-0 top-0 w-[65%] lg:hidden h-screen bg-[#f0eada] pt-6 px-5 ease-in duration-500"
         : "fixed left-[-100%] top-0 p-10 ease-in duration-500"
       }>
         <div className='flex w-full items-center justify-end'>
