@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import "../globals.css";
 
 const navItems = [
   { name: "Ai Planner", href: "/ai-planner" },
@@ -13,6 +12,7 @@ const navItems = [
   { name: "Resources", href: "/resources" },
   { name: "Rating", href: "/rating" },
   { name: "Profile", href: "/publications" },
+  { name: "Login DEMO", href: "/auth/login" },// only here for testing purposes
 ]
 
 export default function Header() {
@@ -20,7 +20,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="bg-[rgb(0,45,114)] shadow-sm sticky top-0 z-10">
+    <header className="bg-[var(--color-primary)] shadow-sm sticky top-0 z-10">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
