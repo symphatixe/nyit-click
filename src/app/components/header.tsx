@@ -7,8 +7,8 @@ import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const navItems = [
-  { name: "Ai Planner", href: "/ai-planner" },
-  { name: "Schudule Match", href: "/schudule-match" },
+  { name: "AI Planner", href: "/ai-planner" },
+  { name: "Schedule Match", href: "/schedule-match" },
   { name: "Resources", href: "/resources" },
   { name: "Rating", href: "/rating" },
   { name: "Profile", href: "/publications" },
