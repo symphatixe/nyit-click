@@ -20,7 +20,7 @@ export default function Login() {
         <div className="flex items-center justify-between">
           <label htmlFor="password" className="block text-sm/6 font-medium text-gray-700">Password</label>
           <div className="text-sm">
-            <a href="#" className="font-semibold text-indigo-400 hover:text-indigo-300">Forgot password?</a>
+            <a href="/auth/forget-pass" className="font-semibold text-indigo-400 hover:text-indigo-300">Forgot password?</a>
           </div>
         </div>
         <div className="mt-2">
@@ -29,7 +29,7 @@ export default function Login() {
       </div>
 
       <div>
-        <button type="submit" className="flex w-full justify-center rounded-md bg-[var(--color-primary)] px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sign in</button>
+        <button type="submit" className="flex w-full justify-center rounded-md bg-[var(--color-primary)] px-3 py-1.5 text-sm/6 font-semibold text-white cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sign in</button>
       </div>
     </form>
 
