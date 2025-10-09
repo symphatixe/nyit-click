@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Register() {
   return (
@@ -45,7 +46,7 @@ export default function Register() {
 
         <p className="mt-10 text-center text-sm/6 text-gray-500">
           Already have an account? {' '}
-          <a href="/auth/login" className="font-semibold text-indigo-400 hover:text-indigo-300">Sign in here.</a>
+          <Link href="/auth/login" className="font-semibold text-indigo-400 hover:text-indigo-300">Sign in here.</Link>
         </p>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Login() {
   return (
@@ -20,7 +21,7 @@ export default function Login() {
         <div className="flex items-center justify-between">
           <label htmlFor="password" className="block text-sm/6 font-medium text-gray-700">Password</label>
           <div className="text-sm">
-            <a href="/auth/forget-pass" className="font-semibold text-indigo-400 hover:text-indigo-300">Forgot password?</a>
+            <Link href="/auth/forget-pass" className="font-semibold text-indigo-400 hover:text-indigo-300">Forgot password?</Link>
           </div>
         </div>
         <div className="mt-2">
@@ -35,7 +36,7 @@ export default function Login() {
 
     <p className="mt-10 text-center text-sm/6 text-gray-500">
       Don&apos;t have an account? {' '}
-      <a href="/auth/register" className="font-semibold text-indigo-400 hover:text-indigo-300">Register here.</a>
+      <Link href="/auth/register" className="font-semibold text-indigo-400 hover:text-indigo-300">Register here.</Link>
     </p>
   </div>
 </div>
