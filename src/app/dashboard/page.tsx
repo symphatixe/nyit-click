@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
-import { logout } from '../login/actions'
+import { logout } from '../(auth)/actions'
 import LogoutButton from '../components/LogoutButton'
 
 export default async function DashboardPage() {

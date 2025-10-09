@@ -2,7 +2,7 @@
 'use client'
 
 import { useState } from 'react'
-import { logout } from '../login/actions'
+import { logout } from '../(auth)/actions'
 
 
 export default function LogoutButton() {

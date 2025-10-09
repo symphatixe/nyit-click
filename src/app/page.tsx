@@ -28,6 +28,12 @@ export default async function Home() {
         >
           Get started
         </Link>
+        <Link
+          href="/register"
+          className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400/70"
+        >
+          page group test
+        </Link>
         
       </main>
     </div>

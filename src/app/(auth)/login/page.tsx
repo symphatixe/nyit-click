@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { login, signup } from './actions'
+import { login, signup } from '../actions'
 
 export default function LoginPage() {
     return (
@@ -39,13 +39,13 @@ export default function LoginPage() {
                     </div>
 
                     <div>
-                        <button formAction={login} className="flex w-full justify-center rounded-md bg-[var(--color-primary)] px-3 py-1.5 text-sm/6 font-semibold text-white cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sign in</button>
+                        <button formAction={login} className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm/6 font-semibold text-white cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sign in</button>
                     </div>
                 </form>
 
                 <p className="mt-10 text-center text-sm/6 text-gray-500">
                     Don&apos;t have an account? {' '}
-                    <Link href="/auth/register" className="font-semibold text-indigo-400 hover:text-indigo-300">Register here.</Link>
+                    <Link href="/register" className="font-semibold text-indigo-400 hover:text-indigo-300">Register here.</Link>
                 </p>
             </div>
         </div>
