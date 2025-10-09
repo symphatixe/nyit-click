@@ -35,7 +35,7 @@ export default function Login() {
 
     <p className="mt-10 text-center text-sm/6 text-gray-500">
       Don&apos;t have an account? {' '}
-      <a href="/register" className="font-semibold text-indigo-400 hover:text-indigo-300">Register here.</a>
+      <a href="/auth/register" className="font-semibold text-indigo-400 hover:text-indigo-300">Register here.</a>
     </p>
   </div>
 </div>
