@@ -11,15 +11,22 @@ export default async function PlannerPage() {
 
   const supabase = await createClient()
   
-    const { data, error } = await supabase.auth.getUser()
-    if (error || !data?.user) {
+  const { data, error: userError } = await supabase.auth.getUser()
+  if (userError || !data?.user) {
       redirect('/login')
-    }
+  }
+
+  const {data: userData, error} = await supabase.from('users').select('first_name, last_name, email, created_at').eq('id', data.user.id).single()
+  if(error) {
+    console.error('Error fetching userData')
+    return <div>Error grabbing data</div>
+  }
   return (
     <div className="pt-24">
       <p>Planner: Hello {data.user.email}</p>
       <p>ID: {data.user.id}</p>
-      
+      <p>{userData.email}</p>
+      <p>Name: {userData.first_name} {userData.last_name}</p>
     </div>
   )
 }
