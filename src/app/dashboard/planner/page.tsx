@@ -9,16 +9,17 @@ export default async function PlannerPage() {
   //   return <p>Unauthorized</p>
   // }
 
-  const supabase = await createClient()
+  const supabase = await createClient();
   
-  const { data, error: userError } = await supabase.auth.getUser()
+  const { data, error: userError } = await supabase.auth.getUser();
   if (userError || !data?.user) {
-      redirect('/login')
+    redirect('/login');
   }
 
-  const {data: userData, error} = await supabase.from('users').select('first_name, last_name, email, created_at').eq('id', data.user.id).single()
+  const {data: userData, error} = await supabase.from('users').select('first_name, last_name, email, created_at').eq('id', data.user.id).single();
+  //need RLS
   if(error) {
-    console.error('Error fetching userData')
+    console.error('Error fetching userData');
     return <div>Error grabbing data</div>
   }
   return (
