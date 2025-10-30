@@ -1,23 +1,20 @@
-import { redirect } from 'next/navigation'
+'use client';
+import SemesterMap from '@/app/components/SemesterMap';
 
-import { createClient } from '@/utils/supabase/server'
-import { logout } from '../(auth)/actions'
-import LogoutButton from '../components/LogoutButton'
 
-export default async function DashboardPage() {
-  const supabase = await createClient();
+export default function SemesterMapPage() {
+   
 
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect('/login')
-  }
+    const handleSubmit = (completedCourses: string[]) => {
+        console.log('Completed courses:', completedCourses);
+        // You can add additional logic here after successful submission
+    };
 
-  return(
-    <div className="pt-24">
-      <p >Dash: Hello {data.user.email}</p>
-      <LogoutButton />
-    </div>
-    
-  )
-  
+
+
+    return (
+      <div className="min-h-screen bg-gray-50 py-8 pt-24">
+            <SemesterMap onSubmit={handleSubmit} />
+        </div>
+    );
 }
