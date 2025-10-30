@@ -11,7 +11,7 @@ const navItems = [
   { name: "Schedule Match", href: "/schedule-match" },
   { name: "Resources", href: "/resources" },
   { name: "Rating", href: "/rating" },
-  { name: "Profile", href: "/publications" },
+  { name: "Profile", href: "/profile" },
   { name: "Login DEMO", href: "/auth/login" },// only here for testing purposes
 ]
 
@@ -33,7 +33,10 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                onClick={() => {
+                  console.log(item.href);
+                }}
+                className={`hover:bg-blue-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
                   pathname === item.href
                     ? "border-white text-white"
                     : "border-transparent text-gray-200 hover:border-gray-300 hover:text-white"
