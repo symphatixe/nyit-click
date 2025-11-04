@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from 'react'
 import { mockSchedule } from '../lib/mockData'
-import { FileText, Link as LinkIcon, File, Download, Search } from 'lucide-react'
+import { FileText, Link as LinkIcon, File, Download, Search, Video } from 'lucide-react'
 
 type ResourceType = 'ppt' | 'doc' | 'link'
 
@@ -40,7 +40,7 @@ export default function ResourceCentral() {
   const [query, setQuery] = useState('')
   const [typeFilter, setTypeFilter] = useState<ResourceType | 'all'>('all')
   const [page, setPage] = useState(1)
-  const perPage = 6
+  const perPage = 5
 
   const filtered = useMemo(() => {
     const list = resources.filter((r) => r.courseCode === activeTab)
@@ -59,7 +59,7 @@ export default function ResourceCentral() {
       case 'doc':
         return <FileText className="text-blue-700" />
       case 'link':
-        return <LinkIcon className="text-blue-700" />
+        return <Video className="text-blue-700" />
     }
   }
 
@@ -72,9 +72,14 @@ export default function ResourceCentral() {
   }
 
   return (
-    <div className="w-full overflow-hidden border-2 border-[var(--color-primary)] rounded-lg p-4 bg-[#ececec6c]">
-      <h2 className="text-2xl font-bold text-[var(--color-primary)]">Shared Materials</h2>
-      <p className="mt-2 text-sm text-gray-700">Access materials uploaded by other students.</p>
+    <div className="w-full overflow-hidden bg-white rounded-lg border border-gray-200 p-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-blue-900">Shared Materials</h2>
+          <p className="mt-1 text-sm text-gray-600">Access materials uploaded by other students.</p>
+        </div>
+        <div className="text-sm text-gray-600">Total: <span className="font-semibold">{resources.length}</span></div>
+      </div>
 
       {/* Tabs */}
       <div className="mt-4 flex gap-2 flex-wrap">
@@ -82,7 +87,7 @@ export default function ResourceCentral() {
           <button
             key={t.code}
             onClick={() => { setActiveTab(t.code); setPage(1) }}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium ${activeTab === t.code ? 'bg-[var(--color-primary)] text-white' : 'bg-gray-200 text-gray-700'}`}>
+            className={`px-3 py-1.5 rounded-md text-sm font-medium border ${activeTab === t.code ? 'bg-blue-900 border-blue-900 text-white' : 'bg-white border-gray-200 text-gray-700'}`}>
             {t.code}
           </button>
         ))}
@@ -93,12 +98,12 @@ export default function ResourceCentral() {
         {/* Search + filter */}
         <div className="flex items-center gap-2 mb-4">
           <div className="flex items-center bg-white border border-gray-200 rounded-md px-3 py-1 w-full">
-            <Search className="mr-2 text-gray-500" />
+            <Search className="mr-2 text-gray-400" />
             <input
               value={query}
               onChange={(e) => { setQuery(e.target.value); setPage(1) }}
               placeholder="Search materials..."
-              className="w-full text-sm bg-transparent outline-none"
+              className="w-full text-sm bg-transparent outline-none px-2 py-1"
             />
           </div>
 
@@ -106,7 +111,7 @@ export default function ResourceCentral() {
             <select
               value={typeFilter}
               onChange={(e) => { const v = e.target.value as ResourceType | 'all'; setTypeFilter(v); setPage(1) }}
-              className="bg-white border border-gray-200 rounded-md px-3 py-1 text-sm"
+              className="bg-white border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All</option>
               <option value="ppt">Slides (ppt)</option>
@@ -119,9 +124,9 @@ export default function ResourceCentral() {
         {/* Cards list - one card per row */}
         <div className="flex flex-col gap-4 w-full">
           {pageItems.map((it) => (
-            <div key={it.id} className="flex items-center justify-between gap-3 p-3 bg-yellow-100 rounded-md w-full">
+            <div key={it.id} className="flex items-center justify-between gap-3 p-3 bg-yellow-50 rounded-md w-full border border-yellow-100">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="p-2 bg-white rounded-md flex items-center justify-center flex-shrink-0">
+                <div className="p-2 bg-white rounded-md flex items-center justify-center flex-shrink-0 border border-gray-100">
                   {iconForType(it.type)}
                 </div>
                 <div className="min-w-0">
@@ -133,10 +138,9 @@ export default function ResourceCentral() {
               <div className="flex-shrink-0">
                 <button
                   onClick={() => handleDownload(it)}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 bg-[var(--color-primary)] text-white rounded-md text-sm"
+                  className="inline-flex items-center gap-2 px-3 py-2 bg-blue-700 hover:bg-blue-900 hover:cursor-pointer text-white rounded-md text-sm font-semibold"
                 >
-                  <Download size={16} />
-                  <span className="hidden sm:inline">Download</span>
+                  {it.id.split('-')[1] === 'link' ? <LinkIcon size={16} /> : <Download size={16} />}
                 </button>
               </div>
             </div>
