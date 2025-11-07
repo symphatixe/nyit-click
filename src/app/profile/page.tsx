@@ -60,6 +60,13 @@ export default function Profile() {
     })
   }, [])
 
+  const formatMilitaryTimeToAmPm = (time: string) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const adjustedHours = hours % 12 || 12; // if the hours component is 0, make it 12. probably won't need it b/c no midnight classes, but just in case
+    return `${adjustedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
       {/* Top row: welcome + profile pic */}
@@ -107,7 +114,7 @@ export default function Profile() {
                       {g.times.map((t, i) => (
                         <div key={i} className="text-xs text-gray-500">
                           <span className="font-medium text-gray-700">{t.days.sort((a,b)=> (dayNameToIndex[a]-dayNameToIndex[b])).join(' ')}</span>
-                          {` • ${t.startTime} - ${t.endTime} • Room: `}
+                          {` • ${formatMilitaryTimeToAmPm(t.startTime)} - ${formatMilitaryTimeToAmPm(t.endTime)} • Room: `}
                           <span className="font-medium text-gray-700">{t.room}</span>
                         </div>
                       ))}
