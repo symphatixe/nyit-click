@@ -70,7 +70,7 @@ export default function Profile() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
       {/* Top row: welcome + profile pic */}
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex items-center justify-between gap-6"> 
         <div className="flex-1">
           <WelcomeHeader />
         </div>
@@ -88,7 +88,7 @@ export default function Profile() {
 
         <div className="mt-3">
           <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-            <div className="h-3 bg-yellow-500" style={{ width: `${percent}%` }} />
+            <div className="h-3 bg-yellow-500" style={{ width: `${percent}%` }} /> 
           </div>
           <div className="mt-2 text-sm text-gray-600">Week {weeksPassed} of {totalWeeks} - {weeksRemaining} remaining</div>
         </div>
