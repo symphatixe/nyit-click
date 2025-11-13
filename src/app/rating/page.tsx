@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import RatingFeedbackForm from '../components/RatingFeedbackForm'
 import ProfessorLookup from '../components/ProfessorLookup'
