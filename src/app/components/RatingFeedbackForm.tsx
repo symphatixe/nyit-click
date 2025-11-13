@@ -66,7 +66,7 @@ export default function RatingFeedbackForm() {
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter(t => t !== tag))
-    } else if (selectedTags.length < 4) {
+    } else if (selectedTags.length < 3) {
       setSelectedTags([...selectedTags, tag])
     }
   }
@@ -144,7 +144,7 @@ export default function RatingFeedbackForm() {
 
         {/* Tags */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-3">Select up to 4 tags</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-3">Select up to 3 tags</label>
           <div className="flex flex-wrap gap-2">
             {TAGS.map((tag) => (
               <button
@@ -155,14 +155,14 @@ export default function RatingFeedbackForm() {
                   selectedTags.includes(tag)
                     ? 'bg-blue-900 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                } ${selectedTags.length >= 4 && !selectedTags.includes(tag) ? 'opacity-50 cursor-not-allowed' : ''}`}
-                disabled={selectedTags.length >= 4 && !selectedTags.includes(tag)}
+                } ${selectedTags.length >= 3 && !selectedTags.includes(tag) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={selectedTags.length >= 3 && !selectedTags.includes(tag)}
               >
                 {tag}
               </button>
             ))}
           </div>
-          <div className="text-xs text-gray-500 mt-2">{selectedTags.length}/4 tags selected</div>
+          <div className="text-xs text-gray-500 mt-2">{selectedTags.length}/3 tags selected</div>
         </div>
 
         {/* Submit Button */}

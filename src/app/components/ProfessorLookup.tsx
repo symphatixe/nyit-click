@@ -1,50 +1,26 @@
 'use client'
 
 import React, { useState, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import { Search } from 'lucide-react'
-
-interface Professor {
-  id: string
-  name: string
-  initials: string
-  commonTags: string[]
-}
-
-const MOCK_PROFESSORS: Professor[] = [
-  {
-    id: '1',
-    name: 'Mike Smith',
-    initials: 'MS',
-    commonTags: ['fair grading', 'engaging lectures', 'helpful office hours']
-  },
-  {
-    id: '2',
-    name: 'Dexter Johnson',
-    initials: 'DJ',
-    commonTags: ['hard exams', 'heavy reading', 'strict attendance']
-  },
-  {
-    id: '3',
-    name: 'Catherine Williams',
-    initials: 'CW',
-    commonTags: ['group projects', 'lenient grading', 'engaging lectures']
-  },
-  {
-    id: '4',
-    name: 'Susan Brown',
-    initials: 'SB',
-    commonTags: ['easy homework', 'practical applications', 'helpful office hours']
-  },
-]
+import { mockProfessors } from '../lib/mockData'
 
 export default function ProfessorLookup() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
 
   const filtered = useMemo(() => {
-    return MOCK_PROFESSORS.filter(prof =>
+    return mockProfessors.filter(prof =>
       prof.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
   }, [searchQuery])
+
+  const handleProfessorClick = (profId: string) => {
+    const prof = mockProfessors.find(p => p.id === profId)
+    if (prof) {
+      router.push(`/rating/professor/${prof.id}`)
+    }
+  }
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -70,7 +46,11 @@ export default function ProfessorLookup() {
       <div className="space-y-3">
         {filtered.length > 0 ? (
           filtered.map((prof) => (
-            <div key={prof.id} className="bg-gray-50 border border-gray-100 rounded-md p-4">
+            <div 
+              key={prof.id} 
+              onClick={() => handleProfessorClick(prof.id)}
+              className="bg-gray-50 border border-gray-100 rounded-md p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 hover:scale-[1.02]"
+            >
               <div className="flex items-start gap-3">
                 {/* Initials Circle */}
                 <div className="w-12 h-12 rounded-full bg-blue-900 text-white flex items-center justify-center flex-shrink-0 font-semibold text-sm">
