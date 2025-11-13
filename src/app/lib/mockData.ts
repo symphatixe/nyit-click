@@ -254,3 +254,87 @@ export const mockReviews: ProfessorReview[] = [
     date: '2025-11-04'
   },
 ];
+
+export interface Student {
+  id: string
+  name: string
+  initials: string
+  year: 'Freshman' | 'Sophomore' | 'Junior' | 'Senior'
+  major: string
+  email: string
+  bio: string
+  sharedClasses: string[]
+}
+
+export const mockStudents: Student[] = [
+  {
+    id: '101',
+    name: 'Emma Johnson',
+    initials: 'EJ',
+    year: 'Sophomore',
+    major: 'Computer Science',
+    email: 'emma.johnson@nyit.edu',
+    bio: 'Passionate about web development and open source projects. Always happy to collaborate!',
+    sharedClasses: ['CS 101', 'MATH 201']
+  },
+  {
+    id: '102',
+    name: 'Liam Chen',
+    initials: 'LC',
+    year: 'Sophomore',
+    major: 'Information Technology',
+    email: 'liam.chen@nyit.edu',
+    bio: 'Interested in cybersecurity and network architecture. Looking for study partners.',
+    sharedClasses: ['CS 101', 'CS 151']
+  },
+  {
+    id: '103',
+    name: 'Sophia Rodriguez',
+    initials: 'SR',
+    year: 'Junior',
+    major: 'Computer Science',
+    email: 'sophia.rodriguez@nyit.edu',
+    bio: 'AI and machine learning enthusiast. Experience with Python and TensorFlow.',
+    sharedClasses: ['CS 101', 'MATH 201', 'PHYS 110']
+  },
+  {
+    id: '104',
+    name: 'Noor Patel',
+    initials: 'NP',
+    year: 'Sophomore',
+    major: 'Engineering',
+    email: 'noor.patel@nyit.edu',
+    bio: 'Loves problem-solving and building things. Part of the robotics club.',
+    sharedClasses: ['MATH 201', 'PHYS 110', 'PHYS 110L']
+  },
+  {
+    id: '105',
+    name: 'Olivia Brown',
+    initials: 'OB',
+    year: 'Junior',
+    major: 'Computer Science',
+    email: 'olivia.brown@nyit.edu',
+    bio: 'Full-stack developer with a focus on user experience. Always learning new frameworks.',
+    sharedClasses: ['CS 101']
+  },
+  {
+    id: '106',
+    name: 'Mason Kim',
+    initials: 'MK',
+    year: 'Freshman',
+    major: 'Information Technology',
+    email: 'mason.kim@nyit.edu',
+    bio: 'New to tech but eager to learn and make friends in the program.',
+    sharedClasses: ['CS 101', 'MATH 201']
+  },
+  {
+    id: '107',
+    name: 'Ava Martinez',
+    initials: 'AM',
+    year: 'Senior',
+    major: 'Computer Science',
+    email: 'ava.martinez@nyit.edu',
+    bio: 'Senior year! Looking to mentor younger students and discuss capstone projects.',
+    sharedClasses: ['CS 151', 'PHYS 110']
+  },
+];
