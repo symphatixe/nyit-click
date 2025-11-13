@@ -124,6 +124,12 @@ export const mockProfessors: Professor[] = [
     initials: 'SB',
     commonTags: ['easy homework', 'practical applications', 'helpful office hours']
   },
+  {
+    id: '5',
+    name: 'Robert Chen',
+    initials: 'RC',
+    commonTags: []
+  },
 ]
 
 export const mockReviews: ProfessorReview[] = [
