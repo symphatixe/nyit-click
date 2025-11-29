@@ -1,5 +1,7 @@
 import React from "react";
 import Link from "next/link";
+import { signup } from "../(auth)/action";
+// import { signup } from "../actions";
 
 export default function Register() {
   return (
@@ -10,7 +12,7 @@ export default function Register() {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form action="#" method="POST" className="space-y-6">
-          
+
           <div>
             <label htmlFor="email" className="block text-sm/6 font-medium text-gray-700">Email address</label>
             <div className="mt-2">
@@ -18,10 +20,13 @@ export default function Register() {
             </div>
           </div>
 
-          <div> 
-            <label htmlFor="username" className="block text-sm/6 font-medium text-gray-700">Username</label>
+          <div>
+            <label htmlFor="name" className="block text-sm/6 font-medium text-gray-700">Name</label>
             <div className="mt-2">
-              <input id="username" type="text" name="username" required autoComplete="username" className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-indigo-800 outline-1 -outline-offset-1 outline-indigo-500 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" placeholder="Enter your username" />
+              <input id="first_name" type="text" name="first_name" required autoComplete="first_name" className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-indigo-800 outline-1 -outline-offset-1 outline-indigo-500 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" placeholder="Enter your first name" />
+            </div>
+            <div className="mt-2">
+              <input id="last_name" type="text" name="last_name" required autoComplete="last_name" className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-indigo-800 outline-1 -outline-offset-1 outline-indigo-500 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" placeholder="Enter your last name" />
             </div>
           </div>
 
@@ -40,7 +45,7 @@ export default function Register() {
           </div>
 
           <div>
-            <button type="submit" className="flex w-full justify-center rounded-md bg-[var(--color-primary)] px-3 py-1.5 text-sm/6 font-semibold text-white cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Register</button>
+            <button type="submit" formAction={signup} className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm/6 font-semibold text-white cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Register</button>
           </div>
         </form>
 
