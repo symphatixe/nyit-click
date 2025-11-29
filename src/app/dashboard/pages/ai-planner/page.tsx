@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Calendar } from 'lucide-react';
-import AcademicProfileForm from '../../components/planner/AcademicProfileForm';
-import ScheduleGrid from '../../components/planner/ScheduleGrid';
+import AcademicProfileForm from '../../../components/planner/AcademicProfileForm';
+import ScheduleGrid from '../../../components/planner/ScheduleGrid';
 import { AcademicProfile, SchedulePreferences, ScheduleBlock } from '../../lib/types';
 import { generateSchedule } from '../../lib/api';
 

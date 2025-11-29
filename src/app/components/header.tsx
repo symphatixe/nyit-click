@@ -7,12 +7,13 @@ import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const navItems = [
-  { name: "AI Planner", href: "/pages/ai-planner" },
-  { name: "Schedule Match", href: "/schedule-match" },
-  { name: "Resources", href: "/resources" },
-  { name: "Rating", href: "/rating" },
-  { name: "Profile", href: "/profile" },
-  { name: "Login DEMO", href: "/auth/login" },// only here for testing purposes
+  { name: "AI Planner", href: "/dashboard/pages/ai-planner" },
+  { name: "Schedule Match", href: "/dashboard/schedule-match" },
+  { name: "Resources", href: "/dashboard/resources" },
+  { name: "Rating", href: "/dashboard/rating" },
+  { name: "Profile", href: "/dashboard/profile" },
+  { name: "Test", href: "/dashboard/test" },
+  // { name: "Login DEMO", href: "/auth/login" },// only here for testing purposes
 ]
 
 export default function Header() {

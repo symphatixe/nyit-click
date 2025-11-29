@@ -1,6 +1,6 @@
 import React from 'react'
-import WelcomeHeader from '../components/homepageHeader'
-import ProfilePic from '../components/profilePicture'
+import WelcomeHeader from '../../components/homepageHeader'
+import ProfilePic from '../../components/profilePicture'
 import { mockSchedule } from '../lib/mockData'
 
 export default function Profile() {

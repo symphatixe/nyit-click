@@ -46,7 +46,7 @@ export default function Register() {
 
         <p className="mt-10 text-center text-sm/6 text-gray-500">
           Already have an account? {' '}
-          <Link href="/auth/login" className="font-semibold text-indigo-400 hover:text-indigo-300">Sign in here.</Link>
+          <Link href="/login" className="font-semibold text-indigo-400 hover:text-indigo-300">Sign in here.</Link>
         </p>
       </div>
     </div>

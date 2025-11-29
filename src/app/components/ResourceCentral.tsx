@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useMemo, useState } from 'react'
-import { mockSchedule } from '../lib/mockData'
+import { mockSchedule } from '../dashboard/lib/mockData'
 import { FileText, Link as LinkIcon, File, Download, Search, Video } from 'lucide-react'
 
 type ResourceType = 'ppt' | 'doc' | 'link'

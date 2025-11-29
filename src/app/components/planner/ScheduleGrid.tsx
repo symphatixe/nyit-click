@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ScheduleBlock } from '../../lib/types';
+import { ScheduleBlock } from '../../dashboard/lib/types';
 
 interface ScheduleGridProps {
   schedule: ScheduleBlock[];

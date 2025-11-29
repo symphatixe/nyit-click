@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search } from 'lucide-react'
-import { mockProfessors } from '../lib/mockData'
+import { mockProfessors } from '../dashboard/lib/mockData'
 
 export default function ProfessorLookup() {
   const router = useRouter()

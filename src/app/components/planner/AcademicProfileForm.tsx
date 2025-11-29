@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { Plus, Sparkles } from 'lucide-react';
 import CourseChip from './CourseChip';
-import { AcademicProfile, SchedulePreferences } from '../../lib/types';
-import { availableCourses } from '../../lib/mockData';
+import { AcademicProfile, SchedulePreferences } from '../../dashboard/lib/types';
+import { availableCourses } from '../../dashboard/lib/mockData';
 
 
 

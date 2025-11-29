@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Star } from 'lucide-react'
-import { mockSchedule } from '../lib/mockData'
+import { mockSchedule } from '../dashboard/lib/mockData'
 
 const TAGS = [
   'easy homework',

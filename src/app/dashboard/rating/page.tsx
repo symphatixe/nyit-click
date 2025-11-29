@@ -1,6 +1,6 @@
 import React from 'react'
-import RatingFeedbackForm from '../components/RatingFeedbackForm'
-import ProfessorLookup from '../components/ProfessorLookup'
+import RatingFeedbackForm from '../../components/RatingFeedbackForm'
+import ProfessorLookup from '../../components/ProfessorLookup'
 
 export default function RatingPage() {
   return (
