@@ -34,11 +34,18 @@ export function useCourseProgress(): UseCourseProgressReturn {
 				setLoading(false);
 				return;
 			}
+
 			setUser(user);
 
 			const { data: userProgress, error } = await supabase
 				.from("user_course_progress")
-				.select("course_code, completed")
+				.select(`
+          course_id,
+          completed,
+          courses (
+            course_code
+          )
+        `)
 				.eq("user_id", user.id)
 				.eq("completed", true);
 
@@ -46,7 +53,9 @@ export function useCourseProgress(): UseCourseProgressReturn {
 
 			if (userProgress && userProgress.length > 0) {
 				const completedCourses = new Set(
-					userProgress.map((progress) => progress.course_code),
+					userProgress
+						.filter((progress: any) => progress.courses?.course_code)
+						.map((progress: any) => progress.courses.course_code)
 				);
 				setSelectedCourses(completedCourses);
 				setHasExistingProgress(true);
@@ -68,34 +77,72 @@ export function useCourseProgress(): UseCourseProgressReturn {
 			try {
 				if (!user) throw new Error("User not authenticated");
 
-				const updates = selectedCodes.map((courseCode) => ({
-					user_id: user.id,
-					course_code: courseCode,
-					completed: true,
-					semester: courses.find((c) => c.code === courseCode)?.semester || 1,
-				}));
+				//fetch courses with matching course codes
+				const { data: coursesData, error: coursesError } = await supabase
+					.from("courses")
+					.select("id, course_code")
+					.in("course_code", selectedCodes);
 
-				// Delete existing progress
+				if (coursesError) {
+					throw new Error(`Failed to fetch courses: ${coursesError.message}`);
+				}
+
+				if (!coursesData || coursesData.length === 0) {
+					throw new Error("No matching courses found in database");
+				}
+
+				//create map of course_code -> course_id
+				const courseMap = new Map<string, string>(
+					coursesData.map((course) => [course.course_code, course.id])
+				);
+
+				//prepare updates with course_id
+				const updates = selectedCodes
+					.map((courseCode) => {
+						const courseId = courseMap.get(courseCode);
+						const courseFromMockData = courses.find((c) => c.code === courseCode);
+
+						if (!courseId || !courseFromMockData) {
+							return null;
+						}
+
+						return {
+							user_id: user.id,
+							course_id: courseId,
+							completed: true,
+							semester: courseFromMockData.semester.toString(),
+							grade: null,
+						};
+					})
+					.filter((update): update is NonNullable<typeof update> => update !== null);
+
+				if (updates.length === 0) {
+					throw new Error("No valid course updates to save");
+				}
+
+				//delete all existing progress for this user
 				const { error: deleteError } = await supabase
 					.from("user_course_progress")
 					.delete()
 					.eq("user_id", user.id);
 
-				if (deleteError) throw deleteError;
+				if (deleteError) {
+					throw new Error(`Failed to delete existing progress: ${deleteError.message}`);
+				}
 
-				// Insert new progress
-				if (updates.length > 0) {
-					const { error: insertError } = await supabase
-						.from("user_course_progress")
-						.insert(updates);
+				//insert new progress
+				const { error: insertError } = await supabase
+					.from("user_course_progress")
+					.insert(updates);
 
-					if (insertError) throw insertError;
+				if (insertError) {
+					throw new Error(`Failed to save progress: ${insertError.message}`);
 				}
 
 				setHasExistingProgress(true);
 			} catch (error) {
 				console.error("Error saving course progress:", error);
-				throw error; // Re-throw so component can handle
+				throw error;
 			} finally {
 				setIsSubmitting(false);
 			}
