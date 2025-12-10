@@ -7,6 +7,7 @@ import ClassSchedule from "@/components/profile/ClassSchedule";
 import { mockSchedule } from "@/lib/mockData";
 import { useGroupedSchedule } from "@/lib/hooks/useGroupedSchedule";
 import { getWeeksBetween, getWeeksPassed } from "@/lib/utils/date";
+import LogoutButton from '@/components/authentication/Logout';
 
 export default function Profile() {
 	const semesterStart = new Date("2025-08-25");
@@ -26,6 +27,10 @@ export default function Profile() {
 				</div>
 				<div className="shrink-0">
 					<ProfilePic />
+					<div className="py-2">
+						<LogoutButton />	
+					</div>
+					
 				</div>
 			</div>
 
@@ -36,6 +41,7 @@ export default function Profile() {
 			<div className="mt-6">
 				<ClassSchedule courses={groupedCourses} todayIndex={todayIndex} />
 			</div>
+	
 		</div>
 	);
 }

@@ -1,6 +1,5 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Courses } from "@/lib/mockData";
 import { useCourseProgress } from "@/lib/hooks/useCourseProgress";
 import { useCourseSelection } from "@/lib/hooks/useCourseSelection";
@@ -35,7 +34,22 @@ export default function SemesterMap({
 		toggleSemester,
 		toggleYear,
 		isSemesterSelected,
+		setSelection,
 	} = useCourseSelection(savedCourses);
+
+	//sync savedCourses with selectedCourses when data loads
+	useEffect(() => {
+		if (savedCourses.size > 0) {
+			setSelection(savedCourses);
+		}
+	}, [savedCourses, setSelection]);
+
+	//hide component if user has existing progress
+	useEffect(() => {
+		if (hasExistingProgress && !loading) {
+			setShowComponent(false);
+		}
+	}, [hasExistingProgress, loading]);
 
 	const coursesBySemester = groupCoursesBySemester(Courses);
 
@@ -44,7 +58,6 @@ export default function SemesterMap({
 			await saveProgress(Array.from(selectedCourses), Courses);
 			onSubmit(Array.from(selectedCourses));
 			setShowComponent(false);
-
 			if (onDismiss) {
 				onDismiss();
 			}
@@ -53,7 +66,7 @@ export default function SemesterMap({
 		}
 	};
 
-	// Loading state
+	//loading state
 	if (loading) {
 		return (
 			<div className="max-w-6xl mx-auto p-6">
@@ -62,7 +75,7 @@ export default function SemesterMap({
 		);
 	}
 
-	// Not authenticated
+	
 	if (!user) {
 		return (
 			<div className="max-w-6xl mx-auto p-6">
@@ -73,7 +86,7 @@ export default function SemesterMap({
 		);
 	}
 
-	// Success state
+	//success state - show when component is hidden and user has progress
 	if (!showComponent && hasExistingProgress) {
 		return (
 			<div className="max-w-6xl mx-auto p-6">

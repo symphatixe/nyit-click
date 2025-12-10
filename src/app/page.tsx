@@ -1,8 +1,17 @@
-"use client";
+"use server";
 
+import { createClient } from "@/lib/utils/database/supabase/server";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+	const supabase = await createClient()
+	const { data: { session } } = await supabase.auth.getSession()
+
+	if (session?.user) {
+		redirect('/dashboard')
+	}
+
 	const features = [
 		{
 			title: "AI Planner",
