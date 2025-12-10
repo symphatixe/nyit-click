@@ -91,11 +91,6 @@ Here's a brief high-level overview of the tech stack Click uses:
 
 - 🎨 **[Tailwind CSS 4](https://tailwindcss.com/)** - A utility-first CSS framework that allows us to rapidly build custom, responsive interfaces without leaving our JSX. The latest version provides improved performance and enhanced design token support.
 
-### 📦 State Management & Validation
-- 🐻 **[Zustand](https://github.com/pmndrs/zustand)** (v5.0.9) - A lightweight, modern state management solution that simplifies global state handling across components. We chose Zustand for its minimal boilerplate and excellent TypeScript support.
-
-- ✅ **[Zod](https://github.com/colinhacks/zod)** (v3.25.76) - TypeScript-first schema validation library used to ensure data integrity across our application, from form inputs to API responses. This provides runtime type safety and clear error messages.
-
 ### 🗄️ Backend & Database
 - ⚡ **[Supabase](https://supabase.com/)** (v2.55.0) - An open-source Firebase alternative that provides our backend infrastructure. Supabase gives us:
   - 🗄️ PostgreSQL database with real-time subscriptions
