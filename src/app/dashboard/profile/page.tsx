@@ -2,6 +2,7 @@
 
 import WelcomeHeader from "@/components/profile/WelcomeHeader";
 import ProfilePic from "@/components/common/ProfilePicture";
+import ProfileBio from "@/components/profile/ProfileBio";
 import SemesterProgress from "@/components/profile/SemesterProgress";
 import ClassSchedule from "@/components/profile/ClassSchedule";
 import { mockSchedule } from "@/lib/mockData";
@@ -36,6 +37,10 @@ export default function Profile() {
 
 			<div className="mt-8">
 				<SemesterProgress weeksPassed={weeksPassed} totalWeeks={totalWeeks} />
+			</div>
+
+			<div className="mt-6">
+				<ProfileBio />
 			</div>
 
 			<div className="mt-6">
