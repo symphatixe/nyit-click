@@ -18,7 +18,7 @@ export default function ProfessorLookup() {
 	const handleProfessorClick = (profId: string) => {
 		const prof = mockProfessors.find((p) => p.id === profId);
 		if (prof) {
-			router.push(`/pages/rating/professor/${prof.id}`);
+			router.push(`/dashboard/rating/professor/${prof.id}`);
 		}
 	};
 

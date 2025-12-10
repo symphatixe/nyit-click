@@ -46,7 +46,7 @@ export default function ScheduleMatchPage() {
 	}, [filteredStudents, currentPage]);
 
 	const handleConnect = (id: string) => {
-		router.push(`/schedule-match/student/${id}`);
+		router.push(`/dashboard/schedule-match/student/${id}`);
 	};
 
 	const handlePageChange = (page: number) => {
