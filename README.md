@@ -1,6 +1,8 @@
 <div align="center">
 
-# Click
+<h1 style="font-size: 10rem; font-weight: 800; margin-bottom: 1rem;">
+  Click
+</h1>
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
