@@ -30,9 +30,3 @@ export interface SchedulePreferences {
 	noMultipleDaysWithLateClasses: boolean;
 	additionalPreferences: string;
 }
-
-// simple type to hold course code and name. for understanding, see professor.types.ts
-export interface CourseInfo {
-	course_code: string;
-	name: string;
-}

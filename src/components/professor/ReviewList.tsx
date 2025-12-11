@@ -1,9 +1,9 @@
 import ReviewCard from "./ReviewCard";
 import Pagination from "@/components/common/Pagination";
-import type { ProfessorReviewWithCourseInfo } from "@/lib/types";
+import type { CourseReview } from "@/lib/types";
 
 interface ReviewsListProps {
-	reviews: ProfessorReviewWithCourseInfo[];
+	reviews: CourseReview[];
 	currentPage: number;
 	totalPages: number;
 	onPageChange: (page: number) => void;
