@@ -12,7 +12,7 @@ import {
 	getProfessorReviews,
 	getProfessorAverageRating,
 } from "@/lib/services/professorService";
-import type { Professor, CourseReview, ProfessorReviewWithCourseInfo } from "@/lib/types";
+import type { Professor, CourseReview } from "@/lib/types";
 
 const REVIEWS_PER_PAGE = 7;
 
@@ -27,7 +27,7 @@ export default function ProfessorPage({
 	const router = useRouter();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [professor, setProfessor] = useState<Professor | null>(null);
-	const [reviews, setReviews] = useState<ProfessorReviewWithCourseInfo[]>([]);
+	const [reviews, setReviews] = useState<CourseReview[]>([]);
 	const [averageRating, setAverageRating] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -48,7 +48,7 @@ export default function ProfessorPage({
 
 				// Fetch professor reviews
 				const profReviews = await getProfessorReviews(slug);
-				setReviews(profReviews); // omit the courses field. we will be using that elsewhere
+				setReviews(profReviews);
 
 				// Calculate average rating
 				const avgRating = await getProfessorAverageRating(slug);
@@ -150,7 +150,6 @@ export default function ProfessorPage({
 					currentPage={currentPage}
 					totalPages={totalPages}
 					onPageChange={setCurrentPage}
-
 				/>
 			</div>
 		</div>
