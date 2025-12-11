@@ -110,42 +110,42 @@ export const availableCourses: Course[] = [
 	},
 ];
 
-export const mockProfessors: Professor[] = [
-	{
-		id: "1",
-		name: "Mike Smith",
-		initials: "MS",
-		commonTags: ["fair grading", "engaging lectures", "helpful office hours"],
-	},
-	{
-		id: "2",
-		name: "Dexter Johnson",
-		initials: "DJ",
-		commonTags: ["hard exams", "heavy reading", "strict attendance"],
-	},
-	{
-		id: "3",
-		name: "Catherine Williams",
-		initials: "CW",
-		commonTags: ["group projects", "lenient grading", "engaging lectures"],
-	},
-	{
-		id: "4",
-		name: "Susan Brown",
-		initials: "SB",
-		commonTags: [
-			"easy homework",
-			"practical applications",
-			"helpful office hours",
-		],
-	},
-	{
-		id: "5",
-		name: "Robert Chen",
-		initials: "RC",
-		commonTags: [],
-	},
-];
+// export const mockProfessors: Professor[] = [
+// 	{
+// 		id: "1",
+// 		name: "Mike Smith",
+// 		initials: "MS",
+// 		commonTags: ["fair grading", "engaging lectures", "helpful office hours"],
+// 	},
+// 	{
+// 		id: "2",
+// 		name: "Dexter Johnson",
+// 		initials: "DJ",
+// 		commonTags: ["hard exams", "heavy reading", "strict attendance"],
+// 	},
+// 	{
+// 		id: "3",
+// 		name: "Catherine Williams",
+// 		initials: "CW",
+// 		commonTags: ["group projects", "lenient grading", "engaging lectures"],
+// 	},
+// 	{
+// 		id: "4",
+// 		name: "Susan Brown",
+// 		initials: "SB",
+// 		commonTags: [
+// 			"easy homework",
+// 			"practical applications",
+// 			"helpful office hours",
+// 		],
+// 	},
+// 	{
+// 		id: "5",
+// 		name: "Robert Chen",
+// 		initials: "RC",
+// 		commonTags: [],
+// 	},
+// ];
 
 export const mockReviews: ProfessorReview[] = [
 	{
