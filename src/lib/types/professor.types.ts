@@ -34,3 +34,13 @@ export interface ProfessorReview {
 	tags: string[];
 	date: string;
 }
+
+export type ProfessorReviewWithCourseInfo = CourseReview & {
+	courses: {
+		course_code: string;
+		name: string;
+	};
+};
+
+// temp type so we dont have to change CourseReview, this is so we can get all the course info alongside the review
+// with just one query. for the course info, see course.types.ts. for where this is used, see professorService.ts
