@@ -30,22 +30,19 @@ export function useCourseProgress(): UseCourseProgressReturn {
 				data: { user },
 			} = await supabase.auth.getUser();
 
-			if (!user) {
-				setLoading(false);
-				return;
-			}
-
 			setUser(user);
 
 			const { data: userProgress, error } = await supabase
 				.from("user_course_progress")
-				.select(`
+				.select(
+					`
           course_id,
           completed,
           courses (
             course_code
           )
-        `)
+        `,
+				)
 				.eq("user_id", user.id)
 				.eq("completed", true);
 
@@ -55,7 +52,7 @@ export function useCourseProgress(): UseCourseProgressReturn {
 				const completedCourses = new Set(
 					userProgress
 						.filter((progress: any) => progress.courses?.course_code)
-						.map((progress: any) => progress.courses.course_code)
+						.map((progress: any) => progress.courses.course_code),
 				);
 				setSelectedCourses(completedCourses);
 				setHasExistingProgress(true);
@@ -93,14 +90,16 @@ export function useCourseProgress(): UseCourseProgressReturn {
 
 				//create map of course_code -> course_id
 				const courseMap = new Map<string, string>(
-					coursesData.map((course) => [course.course_code, course.id])
+					coursesData.map((course) => [course.course_code, course.id]),
 				);
 
 				//prepare updates with course_id
 				const updates = selectedCodes
 					.map((courseCode) => {
 						const courseId = courseMap.get(courseCode);
-						const courseFromMockData = courses.find((c) => c.code === courseCode);
+						const courseFromMockData = courses.find(
+							(c) => c.code === courseCode,
+						);
 
 						if (!courseId || !courseFromMockData) {
 							return null;
@@ -114,7 +113,9 @@ export function useCourseProgress(): UseCourseProgressReturn {
 							grade: null,
 						};
 					})
-					.filter((update): update is NonNullable<typeof update> => update !== null);
+					.filter(
+						(update): update is NonNullable<typeof update> => update !== null,
+					);
 
 				if (updates.length === 0) {
 					throw new Error("No valid course updates to save");
@@ -127,7 +128,9 @@ export function useCourseProgress(): UseCourseProgressReturn {
 					.eq("user_id", user.id);
 
 				if (deleteError) {
-					throw new Error(`Failed to delete existing progress: ${deleteError.message}`);
+					throw new Error(
+						`Failed to delete existing progress: ${deleteError.message}`,
+					);
 				}
 
 				//insert new progress

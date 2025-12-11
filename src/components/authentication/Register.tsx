@@ -1,25 +1,61 @@
+"use client";
+
+import { useActionState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { AlertCircle } from "lucide-react";
 import { signup } from "@/app/(auth)/actions";
 
 export default function RegisterPage() {
+	const router = useRouter();
+	const [state, formAction, pending] = useActionState(signup, null);
+
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-linear-to-b from-gray-50 to-gray-100 px-4">
 			<div className="max-w-md w-full">
 				<div className="text-center mb-8">
-					<h1 className="text-4xl font-bold text-blue-900">NYIT Click</h1>
-					<p className="mt-2 text-gray-600">Create your account</p>
+					<Link href="/" className="text-4xl font-bold text-maincolor">
+						NYIT Click
+					</Link>
+					<p className="mt-2 text-muted-foreground">Create your account</p>
 				</div>
 
-				<div className="bg-white rounded-lg shadow-lg p-8">
-					<h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+				<div className="bg-card rounded-lg shadow-lg p-8">
+					<h2 className="text-2xl font-bold text-center text-card-foreground mb-6">
 						Sign Up
 					</h2>
-					<form action={signup} className="space-y-4">
+
+					{state?.error && (
+						<div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+							<div className="flex items-start gap-3">
+								<AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+								<div className="flex-1">
+									<p className="text-sm text-red-800 font-medium mb-1">
+										{state.error}
+									</p>
+									{state.error.includes("already registered") && (
+										<p className="text-xs text-red-700 mt-2">
+											Already have an account?{" "}
+											<button
+												type="button"
+												onClick={() => router.push("/login")}
+												className="font-semibold underline hover:text-red-900"
+											>
+												Sign in here
+											</button>
+										</p>
+									)}
+								</div>
+							</div>
+						</div>
+					)}
+
+					<form action={formAction} className="space-y-4">
 						<div className="grid grid-cols-2 gap-4">
 							<div>
 								<label
 									htmlFor="first_name"
-									className="block text-sm font-medium text-gray-700 mb-1"
+									className="block text-sm font-medium text-card-foreground mb-1"
 								>
 									First Name
 								</label>
@@ -29,14 +65,15 @@ export default function RegisterPage() {
 									name="first_name"
 									placeholder="John"
 									required
-									className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+									disabled={pending}
+									className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-maincolor focus:border-maincolor transition-colors disabled:opacity-50"
 								/>
 							</div>
 
 							<div>
 								<label
 									htmlFor="last_name"
-									className="block text-sm font-medium text-gray-700 mb-1"
+									className="block text-sm font-medium text-card-foreground mb-1"
 								>
 									Last Name
 								</label>
@@ -46,7 +83,8 @@ export default function RegisterPage() {
 									name="last_name"
 									placeholder="Doe"
 									required
-									className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+									disabled={pending}
+									className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-maincolor focus:border-maincolor transition-colors disabled:opacity-50"
 								/>
 							</div>
 						</div>
@@ -54,7 +92,7 @@ export default function RegisterPage() {
 						<div>
 							<label
 								htmlFor="email"
-								className="block text-sm font-medium text-gray-700 mb-1"
+								className="block text-sm font-medium text-card-foreground mb-1"
 							>
 								Email
 							</label>
@@ -64,14 +102,15 @@ export default function RegisterPage() {
 								name="email"
 								placeholder="you@nyit.edu"
 								required
-								className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+								disabled={pending}
+								className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-maincolor focus:border-maincolor transition-colors disabled:opacity-50"
 							/>
 						</div>
 
 						<div>
 							<label
 								htmlFor="password"
-								className="block text-sm font-medium text-gray-700 mb-1"
+								className="block text-sm font-medium text-card-foreground mb-1"
 							>
 								Password
 							</label>
@@ -82,44 +121,35 @@ export default function RegisterPage() {
 								placeholder="••••••••"
 								required
 								minLength={8}
-								className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+								disabled={pending}
+								className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-maincolor focus:border-maincolor transition-colors disabled:opacity-50"
 							/>
-							<p className="mt-1 text-xs text-gray-500">
+							<p className="mt-1 text-xs text-muted-foreground">
 								Must be at least 8 characters
 							</p>
 						</div>
 
 						<button
 							type="submit"
-							className="w-full bg-primary hover:bg-secondary text-white font-semibold py-3 rounded-lg transition-colors duration-200"
+							disabled={pending}
+							className="w-full bg-maincolor hover:bg-maincolor-dark text-white font-semibold py-3 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
 						>
-							Sign Up
+							{pending ? "Creating account..." : "Sign Up"}
 						</button>
 					</form>
 
 					<div className="mt-6 text-center">
-						<p className="text-sm text-gray-600">
+						<p className="text-sm text-muted-foreground">
 							Already have an account?{" "}
 							<Link
 								href="/login"
-								className="text-blue-600 hover:text-blue-700 font-semibold hover:underline"
+								className="text-maincolor hover:opacity-80 font-semibold hover:underline"
 							>
 								Sign in
 							</Link>
 						</p>
 					</div>
 				</div>
-
-				{/* <p className="mt-8 text-center text-sm text-gray-500">
-					By signing up, you agree to our{" "}
-					<Link href="/terms" className="text-blue-600 hover:underline">
-						Terms of Service
-					</Link>{" "}
-					and{" "}
-					<Link href="/privacy" className="text-blue-600 hover:underline">
-						Privacy Policy
-					</Link>
-				</p> */}
 			</div>
 		</div>
 	);

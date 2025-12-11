@@ -4,7 +4,14 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/database/supabase/server";
 
-export async function login(formData: FormData) {
+type ActionState = {
+	error?: string;
+};
+
+export async function login(
+	prevState: ActionState | null,
+	formData: FormData,
+): Promise<ActionState> {
 	const supabase = await createClient();
 
 	const data = {
@@ -15,14 +22,20 @@ export async function login(formData: FormData) {
 	const { error } = await supabase.auth.signInWithPassword(data);
 
 	if (error) {
-		redirect("/error");
+		if (error.message.includes("Invalid login credentials")) {
+			return { error: "invalid_credentials" };
+		}
+		return { error: error.message };
 	}
 
 	revalidatePath("/", "layout");
 	redirect("/dashboard/profile");
 }
 
-export async function signup(formData: FormData) {
+export async function signup(
+	prevState: ActionState | null,
+	formData: FormData,
+): Promise<ActionState> {
 	const supabase = await createClient();
 
 	const email = formData.get("email") as string;
@@ -37,7 +50,12 @@ export async function signup(formData: FormData) {
 
 	if (authError) {
 		console.log(authError);
-		redirect("/error");
+		if (authError.message.includes("already registered")) {
+			return {
+				error: "This email is already registered. Please log in instead.",
+			};
+		}
+		return { error: authError.message };
 	}
 
 	if (authResponse.user) {
@@ -51,16 +69,40 @@ export async function signup(formData: FormData) {
 
 		if (userError) {
 			console.log(userError);
-			redirect("/error");
+			return { error: "Failed to create user profile" };
 		}
 	}
 
 	revalidatePath("/", "layout");
-	redirect("/dashboard/profile");
+	redirect("/dashboard/semester-map");
 }
 
 export async function logout() {
 	const supabase = await createClient();
 	await supabase.auth.signOut();
 	redirect("/login");
+}
+
+export async function resetPassword(
+	prevState: ActionState | null,
+	formData: FormData,
+): Promise<ActionState> {
+	const supabase = await createClient();
+
+	const email = formData.get("email") as string;
+
+	if (!email) {
+		return { error: "Email is required" };
+	}
+
+	const { error } = await supabase.auth.resetPasswordForEmail(email, {
+		redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
+	});
+
+	if (error) {
+		console.error("Password reset error:", error);
+		return { error: error.message };
+	}
+
+	return { error: "success" };
 }

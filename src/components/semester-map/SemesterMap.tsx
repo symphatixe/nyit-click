@@ -20,7 +20,6 @@ export default function SemesterMap({
 	const [showComponent, setShowComponent] = useState(true);
 
 	const {
-		user,
 		loading,
 		hasExistingProgress,
 		selectedCourses: savedCourses,
@@ -75,17 +74,6 @@ export default function SemesterMap({
 		);
 	}
 
-	if (!user) {
-		return (
-			<div className="max-w-6xl mx-auto p-6">
-				<div className="text-center text-red-600">
-					Please log in to view your semester map.
-				</div>
-			</div>
-		);
-	}
-
-	//success state - show when component is hidden and user has progress
 	if (!showComponent && hasExistingProgress) {
 		return (
 			<div className="max-w-6xl mx-auto p-6">
