@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/utils/database/supabase/client";
-import type { Professor, CourseReview } from "@/lib/types";
-
+import type { Professor, ProfessorReviewWithCourseInfo } from "@/lib/types";
 
 export async function searchProfessors(query: string): Promise<Professor[]> {
 	const client = createClient();
@@ -123,12 +122,13 @@ export async function getProfessor(professorId: string): Promise<Professor | nul
 	};
 }
 
-export async function getProfessorReviews(professorId: string): Promise<CourseReview[]> {
+
+export async function getProfessorReviews(professorId: string): Promise<ProfessorReviewWithCourseInfo[]> {
 	const client = createClient();
 
 	const { data, error } = await client
 		.from("course_reviews")
-		.select("*")
+		.select("*, courses(course_code, name)")
 		.eq("professor_id", professorId)
 		.order("created_at", { ascending: false });
 
