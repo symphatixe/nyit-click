@@ -12,7 +12,7 @@ import LogoutButton from '@/components/authentication/Logout';
 
 export default function Profile() {
 	const semesterStart = new Date("2025-08-25");
-	const semesterEnd = new Date("2025-12-12");
+	const semesterEnd = new Date("2025-11-12");
 
 	const totalWeeks = getWeeksBetween(semesterStart, semesterEnd);
 	const weeksPassed = getWeeksPassed(semesterStart, new Date(), totalWeeks);
@@ -36,7 +36,9 @@ export default function Profile() {
 			</div>
 
 			<div className="mt-8">
-				<SemesterProgress weeksPassed={weeksPassed} totalWeeks={totalWeeks} />
+				{/*Strictly for testing purposes <SemesterProgress weeksPassed={0} totalWeeks={0} testDate={new Date('2025-010-10')} /> */}
+
+				<SemesterProgress weeksPassed={0} totalWeeks={0} />
 			</div>
 
 			<div className="mt-6">
