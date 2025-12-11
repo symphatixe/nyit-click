@@ -3,7 +3,7 @@ import type {
 	Professor,
 	CourseReview,
 	ProfessorReviewWithCourseInfo,
-} from "@/lib/types";
+} from "@/types";
 
 export async function searchProfessors(query: string): Promise<Professor[]> {
 	const client = createClient();

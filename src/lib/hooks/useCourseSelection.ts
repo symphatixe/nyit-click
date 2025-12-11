@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { SemesterMapCourse } from "@/lib/types";
+import type { SemesterMapCourse } from "@/types";
 import {
 	toggleCourseSelection,
 	toggleSemesterSelection,

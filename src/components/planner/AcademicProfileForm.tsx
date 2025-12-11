@@ -3,8 +3,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Sparkles, Search, Loader2 } from "lucide-react";
 import CourseChip from "./CourseChip";
-import type { AcademicProfile, SchedulePreferences } from "@/types";
-import type { Course } from "@/lib/types";
+import type { AcademicProfile, SchedulePreferences, Course } from "@/types";
 import { searchCourses } from "@/lib/services/courseService";
 
 interface AcademicProfileFormProps {

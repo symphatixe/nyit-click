@@ -3,8 +3,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Search, Loader2 } from "lucide-react";
-import { searchProfessors, getProfessorCommonTags } from "@/lib/services/professorService";
-import type { Professor } from "@/lib/types";
+import {
+	searchProfessors,
+	getProfessorCommonTags,
+} from "@/lib/services/professorService";
+import type { Professor } from "@/types";
 
 export default function ProfessorLookup() {
 	const router = useRouter();
@@ -25,7 +28,7 @@ export default function ProfessorLookup() {
 					professors.map(async (prof) => ({
 						...prof,
 						commonTags: await getProfessorCommonTags(prof.id),
-					}))
+					})),
 				);
 				setProfessorsToDisplay(professorsWithTags);
 				setInitialLoadComplete(true);
@@ -41,50 +44,47 @@ export default function ProfessorLookup() {
 	}, []);
 
 	// Handle search
-	const handleSearch = useCallback(
-		async (query: string) => {
-			setSearchQuery(query);
+	const handleSearch = useCallback(async (query: string) => {
+		setSearchQuery(query);
 
-			if (!query.trim()) {
-				// Show initial top 5 when cleared
-				setLoading(true);
-				try {
-					const professors = await searchProfessors("");
-					const professorsWithTags = await Promise.all(
-						professors.map(async (prof) => ({
-							...prof,
-							commonTags: await getProfessorCommonTags(prof.id),
-						}))
-					);
-					setProfessorsToDisplay(professorsWithTags);
-				} catch (error) {
-					console.error("Error loading professors:", error);
-				} finally {
-					setLoading(false);
-				}
-				return;
-			}
-
-			// Search professors
+		if (!query.trim()) {
+			// Show initial top 5 when cleared
 			setLoading(true);
 			try {
-				const results = await searchProfessors(query);
+				const professors = await searchProfessors("");
 				const professorsWithTags = await Promise.all(
-					results.map(async (prof) => ({
+					professors.map(async (prof) => ({
 						...prof,
 						commonTags: await getProfessorCommonTags(prof.id),
-					}))
+					})),
 				);
 				setProfessorsToDisplay(professorsWithTags);
 			} catch (error) {
-				console.error("Error searching professors:", error);
-				setProfessorsToDisplay([]);
+				console.error("Error loading professors:", error);
 			} finally {
 				setLoading(false);
 			}
-		},
-		[]
-	);
+			return;
+		}
+
+		// Search professors
+		setLoading(true);
+		try {
+			const results = await searchProfessors(query);
+			const professorsWithTags = await Promise.all(
+				results.map(async (prof) => ({
+					...prof,
+					commonTags: await getProfessorCommonTags(prof.id),
+				})),
+			);
+			setProfessorsToDisplay(professorsWithTags);
+		} catch (error) {
+			console.error("Error searching professors:", error);
+			setProfessorsToDisplay([]);
+		} finally {
+			setLoading(false);
+		}
+	}, []);
 
 	const handleProfessorClick = (profId: string) => {
 		router.push(`/dashboard/rating/professor/${profId}`);
@@ -108,7 +108,9 @@ export default function ProfessorLookup() {
 						placeholder="Search professors by name..."
 						className="w-full text-sm bg-transparent outline-none"
 					/>
-					{loading && <Loader2 className="animate-spin text-gray-400" size={18} />}
+					{loading && (
+						<Loader2 className="animate-spin text-gray-400" size={18} />
+					)}
 				</div>
 			</div>
 
@@ -167,4 +169,3 @@ export default function ProfessorLookup() {
 		</div>
 	);
 }
-

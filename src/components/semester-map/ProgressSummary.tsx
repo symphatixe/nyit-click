@@ -1,4 +1,4 @@
-import type { SemesterMapCourse } from "@/lib/types";
+import type { SemesterMapCourse } from "@/types";
 import { calculateTotalCredits } from "@/lib/utils/semester/courseGrouping";
 
 interface ProgressSummaryProps {

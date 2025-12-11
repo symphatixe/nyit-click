@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/utils/database/supabase/client";
 import type { User } from "@supabase/supabase-js";
-import type { SemesterMapCourse } from "@/lib/types";
+import type { SemesterMapCourse } from "@/types";
 
 interface UseCourseProgressReturn {
 	user: User | null;

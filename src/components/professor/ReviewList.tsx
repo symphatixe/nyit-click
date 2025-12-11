@@ -1,6 +1,6 @@
 import ReviewCard from "./ReviewCard";
 import Pagination from "@/components/common/Pagination";
-import type { ProfessorReviewWithCourseInfo } from "@/lib/types";
+import type { ProfessorReviewWithCourseInfo } from "@/types";
 
 interface ReviewsListProps {
 	reviews: ProfessorReviewWithCourseInfo[];

@@ -44,11 +44,11 @@ const StarRating: React.FC<StarRatingProps> = ({ label, rating, onRating }) => {
 					>
 						<Star
 							size={28}
-							className={`${
+							className={
 								star <= rating
 									? "fill-yellow-500 text-yellow-500"
 									: "text-gray-300"
-							}`}
+							}
 						/>
 					</button>
 				))}
@@ -63,6 +63,7 @@ export default function RatingFeedbackForm() {
 	const [courseSearchResults, setCourseSearchResults] = useState<Course[]>([]);
 	const [courseLoading, setCourseLoading] = useState(false);
 	const [showCourseDropdown, setShowCourseDropdown] = useState(false);
+
 	const [selectedProfessor, setSelectedProfessor] = useState<Professor | null>(
 		null,
 	);
@@ -70,6 +71,7 @@ export default function RatingFeedbackForm() {
 	const [profSearchResults, setProfSearchResults] = useState<Professor[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [showProfessorDropdown, setShowProfessorDropdown] = useState(false);
+
 	const [rating, setRating] = useState(0);
 	const [feedback, setFeedback] = useState("");
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -160,7 +162,6 @@ export default function RatingFeedbackForm() {
 		try {
 			const client = createClient();
 
-			// Get current user
 			const {
 				data: { user },
 			} = await client.auth.getUser();
@@ -170,12 +171,11 @@ export default function RatingFeedbackForm() {
 				return;
 			}
 
-			// Insert into course_reviews table
 			const { error } = await client.from("course_reviews").insert([
 				{
 					user_id: user.id,
 					course_id: selectedCourse.id,
-					rating: rating,
+					rating,
 					review_text: feedback,
 					review_tags: selectedTags,
 					professor_id: selectedProfessor.id,
@@ -252,34 +252,6 @@ export default function RatingFeedbackForm() {
 		);
 	};
 
-	const courseDropdownRef = useRef<HTMLDivElement | null>(null);
-	const professorDropdownRef = useRef<HTMLDivElement | null>(null);
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			const target = event.target as Node;
-
-			if (
-				courseDropdownRef.current &&
-				!courseDropdownRef.current.contains(target)
-			) {
-				setShowCourseDropdown(false);
-			}
-
-			if (
-				professorDropdownRef.current &&
-				!professorDropdownRef.current.contains(target)
-			) {
-				setShowProfessorDropdown(false);
-			}
-		};
-
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
-
 	const getProfessorDropdownContent = () => {
 		if (loading) {
 			return (
@@ -324,6 +296,34 @@ export default function RatingFeedbackForm() {
 		);
 	};
 
+	const courseDropdownRef = useRef<HTMLDivElement | null>(null);
+	const professorDropdownRef = useRef<HTMLDivElement | null>(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			const target = event.target as Node;
+
+			if (
+				courseDropdownRef.current &&
+				!courseDropdownRef.current.contains(target)
+			) {
+				setShowCourseDropdown(false);
+			}
+
+			if (
+				professorDropdownRef.current &&
+				!professorDropdownRef.current.contains(target)
+			) {
+				setShowProfessorDropdown(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
 	return (
 		<div className="bg-white rounded-lg border border-gray-200 p-6">
 			<p className="text-sm text-gray-600 mb-6">
@@ -331,6 +331,7 @@ export default function RatingFeedbackForm() {
 			</p>
 
 			<form onSubmit={handleSubmit} className="space-y-6">
+				{/* Course selector */}
 				<div>
 					<label
 						className="block text-sm font-semibold text-gray-700 mb-3"
@@ -345,10 +346,10 @@ export default function RatingFeedbackForm() {
 								id="completedCoursesSearch"
 								value={courseSearchQuery}
 								onChange={(e) => {
-									handleCourseSearch(e.target.value); // your async search
-									setShowCourseDropdown(true); // 🔹 open when typing
+									handleCourseSearch(e.target.value);
+									setShowCourseDropdown(true);
 								}}
-								onFocus={() => setShowCourseDropdown(true)} // 🔹 open on focus
+								onFocus={() => setShowCourseDropdown(true)}
 								placeholder="Search courses"
 								className="w-full text-sm bg-transparent outline-none"
 							/>
@@ -380,6 +381,7 @@ export default function RatingFeedbackForm() {
 					)}
 				</div>
 
+				{/* Professor selector */}
 				<div>
 					<label
 						className="block text-sm font-semibold text-gray-700 mb-3"
@@ -387,7 +389,7 @@ export default function RatingFeedbackForm() {
 					>
 						Select professor
 					</label>
-					<div className="relative">
+					<div ref={professorDropdownRef} className="relative">
 						<div className="flex items-center bg-white border border-gray-300 rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent">
 							<Search className="mr-2 text-gray-400" size={18} />
 							<input
@@ -407,30 +409,11 @@ export default function RatingFeedbackForm() {
 							)}
 						</div>
 
-						<div ref={professorDropdownRef} className="relative">
-							<div className="flex items-center bg-white border border-gray-300 rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent">
-								<Search className="mr-2 text-gray-400" size={18} />
-								<input
-									value={professorSearchQuery}
-									onChange={(e) => {
-										handleProfessorSearch(e.target.value);
-										setShowProfessorDropdown(true);
-									}}
-									onFocus={() => setShowProfessorDropdown(true)}
-									placeholder="Search professors..."
-									className="w-full text-sm bg-transparent outline-none"
-								/>
-								{loading && (
-									<Loader2 className="animate-spin text-gray-400" size={18} />
-								)}
+						{showProfessorDropdown && (
+							<div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+								{getProfessorDropdownContent()}
 							</div>
-
-							{showProfessorDropdown && (
-								<div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-									{getProfessorDropdownContent()}
-								</div>
-							)}
-						</div>
+						)}
 					</div>
 
 					{selectedProfessor && (
@@ -449,6 +432,7 @@ export default function RatingFeedbackForm() {
 					)}
 				</div>
 
+				{/* Rating */}
 				<div>
 					<label
 						className="block text-sm font-semibold text-gray-700 mb-3"
@@ -459,6 +443,7 @@ export default function RatingFeedbackForm() {
 					<StarRating label="Rating" rating={rating} onRating={setRating} />
 				</div>
 
+				{/* Feedback */}
 				<div>
 					<label
 						className="block text-sm font-semibold text-gray-700 mb-2"
@@ -482,6 +467,7 @@ export default function RatingFeedbackForm() {
 					</div>
 				</div>
 
+				{/* Tags */}
 				<div>
 					<label
 						className="block text-sm font-semibold text-gray-700 mb-3"
@@ -526,6 +512,7 @@ export default function RatingFeedbackForm() {
 					{isSubmitting ? "Submitting..." : "Submit Feedback"}
 				</button>
 			</form>
+
 			{thanks && (
 				<div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
 					<p className="text-sm text-green-800 font-medium">
