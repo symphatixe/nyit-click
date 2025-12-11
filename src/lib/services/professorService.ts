@@ -58,7 +58,7 @@ export async function getProfessorCommonTags(professorId: string): Promise<strin
 	const { data: reviews, error } = await client
 		.from("course_reviews")
 		.select("review_tags")
-		.eq("professor_id", professorId) // add this column 
+		.eq("professor_id", professorId) 
 		.not("review_tags", "is", null);
 
 	if (error) {
