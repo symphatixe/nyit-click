@@ -17,11 +17,9 @@ export interface Professor {
 	bio?: string;
 	initials?: string;
 	commonTags?: string[];
-	// Legacy fields for backwards compatibility
 	name?: string;
 }
 
-// Legacy type for backwards compatibility
 export interface ProfessorReview {
 	id: string;
 	professorId: string;
@@ -34,3 +32,10 @@ export interface ProfessorReview {
 	tags: string[];
 	date: string;
 }
+
+export type ProfessorReviewWithCourseInfo = CourseReview & {
+	courses: {
+		course_code: string;
+		name: string;
+	};
+};

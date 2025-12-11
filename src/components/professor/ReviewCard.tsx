@@ -1,9 +1,9 @@
 import StarRating from "./StarRating";
-import type { CourseReview } from "@/lib/types";
+import type { ProfessorReviewWithCourseInfo, CourseInfo } from "@/lib/types";
 
 export default function ReviewCard({
 	review,
-}: Readonly<{ review: CourseReview }>) {
+}: Readonly<{ review: ProfessorReviewWithCourseInfo }>) {
 	const formatDate = (dateString: string) => {
 		return new Date(dateString).toLocaleDateString("en-US", {
 			year: "numeric",
@@ -12,17 +12,23 @@ export default function ReviewCard({
 		});
 	};
 
+	const courseInfo: CourseInfo = review.courses;
+
 	return (
 		<article className="bg-gray-50 rounded-md border border-gray-100 p-4">
 			<header className="mb-3">
-				<p className="text-xs text-gray-500">
-					{formatDate(review.created_at)}
-				</p>
+				<p className="text-xs text-gray-500">{formatDate(review.created_at)}</p>
 			</header>
 
 			<div className="mb-3">
 				<p className="text-gray-600 text-xs mb-1">Rating</p>
 				<StarRating rating={review.rating} size={14} />
+			</div>
+
+			<div className="mb-3 border-b bg-primary border-gray-200 rounded-md px-3 py-1 inline-block">
+				<p className="text-sm text-white">
+					<strong>Course:</strong> {courseInfo.course_code} - {courseInfo.name}
+				</p>
 			</div>
 
 			<p className="text-sm text-gray-700 mb-3">{review.review_text}</p>

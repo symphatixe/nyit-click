@@ -38,3 +38,8 @@ export interface SchedulePreferences {
 	noMultipleDaysWithLateClasses: boolean;
 	additionalPreferences: string;
 }
+
+export interface CourseInfo {
+	course_code: string;
+	name: string;
+}

@@ -12,7 +12,7 @@ import {
 	getProfessorReviews,
 	getProfessorAverageRating,
 } from "@/lib/services/professorService";
-import type { Professor, CourseReview } from "@/lib/types";
+import type { Professor, ProfessorReviewWithCourseInfo } from "@/types";
 
 const REVIEWS_PER_PAGE = 7;
 
@@ -27,7 +27,7 @@ export default function ProfessorPage({
 	const router = useRouter();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [professor, setProfessor] = useState<Professor | null>(null);
-	const [reviews, setReviews] = useState<CourseReview[]>([]);
+	const [reviews, setReviews] = useState<ProfessorReviewWithCourseInfo[]>([]);
 	const [averageRating, setAverageRating] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);

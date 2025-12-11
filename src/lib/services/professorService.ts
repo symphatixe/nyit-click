@@ -1,6 +1,9 @@
 import { createClient } from "@/lib/utils/database/supabase/client";
-import type { Professor, CourseReview } from "@/lib/types";
-
+import type {
+	Professor,
+	CourseReview,
+	ProfessorReviewWithCourseInfo,
+} from "@/lib/types";
 
 export async function searchProfessors(query: string): Promise<Professor[]> {
 	const client = createClient();
@@ -51,14 +54,16 @@ export async function searchProfessors(query: string): Promise<Professor[]> {
 	}));
 }
 
-export async function getProfessorCommonTags(professorId: string): Promise<string[]> {
+export async function getProfessorCommonTags(
+	professorId: string,
+): Promise<string[]> {
 	const client = createClient();
 
 	// Get reviews for a professor and extract most common tags
 	const { data: reviews, error } = await client
 		.from("course_reviews")
 		.select("review_tags")
-		.eq("professor_id", professorId) 
+		.eq("professor_id", professorId)
 		.not("review_tags", "is", null);
 
 	if (error) {
@@ -90,12 +95,14 @@ export async function getProfessorsWithTags(): Promise<
 		professors.map(async (prof) => ({
 			...prof,
 			commonTags: await getProfessorCommonTags(prof.id),
-		}))
+		})),
 	);
 	return professorsWithTags;
 }
 
-export async function getProfessor(professorId: string): Promise<Professor | null> {
+export async function getProfessor(
+	professorId: string,
+): Promise<Professor | null> {
 	const client = createClient();
 
 	const { data, error } = await client
@@ -123,12 +130,15 @@ export async function getProfessor(professorId: string): Promise<Professor | nul
 	};
 }
 
-export async function getProfessorReviews(professorId: string): Promise<CourseReview[]> {
+export async function getProfessorReviews(
+	professorId: string,
+): Promise<ProfessorReviewWithCourseInfo[]> {
 	const client = createClient();
 
 	const { data, error } = await client
 		.from("course_reviews")
 		.select("*")
+		.select("*, courses(course_code, name)")
 		.eq("professor_id", professorId)
 		.order("created_at", { ascending: false });
 
@@ -141,7 +151,7 @@ export async function getProfessorReviews(professorId: string): Promise<CourseRe
 }
 
 export async function getProfessorAverageRating(
-	professorId: string
+	professorId: string,
 ): Promise<number> {
 	const client = createClient();
 
