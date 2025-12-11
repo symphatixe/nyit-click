@@ -47,7 +47,7 @@ export default function QuickSelection({
 									className={`text-sm py-2 px-4 rounded transition-colors duration-200 ${
 										allYearSelected
 											? "bg-green-600 hover:bg-green-700 text-white"
-											: "bg-blue-600 hover:bg-blue-700 text-white"
+											: "bg-primary hover:bg-secondary text-white"
 									}`}
 									aria-pressed={allYearSelected}
 								>

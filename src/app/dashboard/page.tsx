@@ -1,15 +1,19 @@
-'use client';
-import React from 'react'
-import SemesterMap from '@/components/semester-map/SemesterMap';
-import LogoutButton from '@/components/authentication/Logout';
+"use client";
 
-export default function Landing() {
-    const handleSubmit = (completedCourses: string[]) => {
-        console.log('Completed courses:', completedCourses);
-    }
-    return (
-        <div>
-            <SemesterMap onSubmit={handleSubmit} />
-        </div>
-    );
+import { useRouter } from "next/navigation";
+import SemesterMap from "@/components/semester-map/SemesterMap";
+
+export default function SemesterMapPage() {
+	const router = useRouter();
+
+	const handleSubmit = (completedCourses: string[]) => {
+		console.log("Completed courses:", completedCourses);
+		router.push("/dashboard/ai-planner");
+	};
+
+	const handleDismiss = () => {
+		router.back();
+	};
+
+	return <SemesterMap onSubmit={handleSubmit} onDismiss={handleDismiss} />;
 }

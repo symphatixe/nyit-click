@@ -13,7 +13,7 @@ export default function DesktopNav({
 					href={item.href}
 					className={`inline-flex items-center px-4 py-2 font-medium rounded-md transition-colors text-lg ${
 						pathname === item.href
-							? "text-white bg-maincolor/80 border-b-2 border-white"
+							? "text-white bg-maincolor/80 border-2 border-white"
 							: "text-gray-200 hover:text-white hover:bg-maincolor/60"
 					}`}
 				>

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/global.tw.css";
 import type React from "react";
-import Header from "@/components/layout/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +19,7 @@ export default function RootLayout({
 				className={`${inter.className} bg-gray-50 text-gray-900 antialiased`}
 				suppressHydrationWarning
 			>
-				<div className="flex flex-col min-h-screen">
-					
-					<main className="grow container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-						{children}
-					</main>
-				</div>
+				{children}
 			</body>
 		</html>
 	);

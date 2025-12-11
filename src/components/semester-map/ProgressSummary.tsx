@@ -69,7 +69,7 @@ export default function ProgressSummary({
 					type="button"
 					onClick={onSubmit}
 					disabled={isSubmitting || selectedCourses.size === 0}
-					className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 disabled:cursor-not-allowed"
+					className="bg-primary hover:bg-secondary disabled:bg-blue-400 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 disabled:cursor-not-allowed"
 				>
 					{isSubmitting ? "Saving..." : "Save Course Progress"}
 				</button>

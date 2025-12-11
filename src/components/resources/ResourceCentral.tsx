@@ -188,7 +188,7 @@ export default function ResourceCentral() {
 							<div className="shrink-0">
 								<button
 									onClick={() => handleDownload(it)}
-									className="inline-flex items-center gap-2 px-3 py-2 bg-blue-700 hover:bg-blue-900 hover:cursor-pointer text-white rounded-md text-sm font-semibold"
+									className="inline-flex items-center gap-2 px-3 py-2 bg-primary hover:bg-blue-900 hover:cursor-pointer text-white rounded-md text-sm font-semibold"
 								>
 									{it.id.split("-")[1] === "link" ? (
 										<LinkIcon size={16} />

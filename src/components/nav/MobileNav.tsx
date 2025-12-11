@@ -20,7 +20,7 @@ export default function MobileNav({
 			<div className="-mr-2 flex items-center sm:hidden">
 				<button
 					onClick={toggleMenu}
-					className="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+					className="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
 				>
 					<span className="sr-only">Toggle main menu</span>
 					<AnimatePresence initial={false} mode="wait">
@@ -68,8 +68,8 @@ export default function MobileNav({
 										href={item.href}
 										className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
 											isActive
-												? "bg-blue-800 border-white text-white"
-												: "border-transparent text-gray-200 hover:bg-blue-700 hover:border-gray-300 hover:text-white"
+												? "bg-primary border-white text-white"
+												: "border-transparent text-gray-200 hover:bg-secondary hover:border-gray-300 hover:text-white"
 										}`}
 										onClick={toggleMenu}
 									>

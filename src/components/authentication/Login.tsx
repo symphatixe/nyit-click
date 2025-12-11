@@ -6,7 +6,9 @@ export default function LoginPage() {
 		<div className="min-h-screen flex items-center justify-center bg-linear-to-b from-gray-50 to-gray-100 px-4">
 			<div className="max-w-md w-full">
 				<div className="text-center mb-8">
-					<h1 className="text-4xl font-bold text-blue-900">NYIT Click</h1>
+					<Link href="/" className="text-4xl font-bold text-blue-900">
+						NYIT Click
+					</Link>
 					<p className="mt-2 text-gray-600">Welcome back!</p>
 				</div>
 
@@ -61,7 +63,7 @@ export default function LoginPage() {
 
 						<button
 							type="submit"
-							className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200"
+							className="w-full bg-primary hover:bg-secondary text-white font-semibold py-3 rounded-lg transition-colors duration-200"
 						>
 							Sign In
 						</button>

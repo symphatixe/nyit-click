@@ -1,15 +1,15 @@
-"use server";
-
 import { createClient } from "@/lib/utils/database/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-	const supabase = await createClient()
-	const { data: { session } } = await supabase.auth.getSession()
+	const supabase = await createClient();
+	const {
+		data: { session },
+	} = await supabase.auth.getSession();
 
 	if (session?.user) {
-		redirect('/dashboard')
+		redirect("/dashboard");
 	}
 
 	const features = [
@@ -17,28 +17,28 @@ export default async function Home() {
 			title: "AI Planner",
 			description:
 				"Get class recommendations based on your course map. Avoid stress and let us do the work for you!",
-			href: "/planner",
+			href: "/login",
 			icon: "🤖",
 		},
 		{
 			title: "Match Schedule",
 			description:
 				"Find students with similar schedules for similar course interests and support.",
-			href: "/match",
+			href: "/login",
 			icon: "🤝",
 		},
 		{
 			title: "Resource Central",
 			description:
 				"Browse and share notes, materials, and useful links uploaded by your classmates to make your coursework easier!",
-			href: "/resources",
+			href: "/login",
 			icon: "📚",
 		},
 		{
 			title: "Ratings & Feedback",
 			description:
 				"Read and submit anonymous feedback on courses and professors to better serve the interests of your peers.",
-			href: "/ratings",
+			href: "/login",
 			icon: "⭐",
 		},
 	];
