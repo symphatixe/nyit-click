@@ -10,6 +10,7 @@ import type {
 	ScheduleBlock,
 } from "@/types";
 import { generateSchedule } from "@/lib/services/scheduleMatch";
+import Link from "next/link";
 
 export default function PlannerPage() {
 	const [loading, setLoading] = useState(false);
@@ -47,10 +48,13 @@ export default function PlannerPage() {
 					<p className="text-sm text-gray-600">
 						Your Major: Computer Science B.S
 					</p>
-					<button className="mt-2 bg-white border-2 border-blue-900 text-blue-900 px-4 py-2 rounded-md text-sm font-semibold flex items-center gap-2 hover:bg-blue-50">
+					<Link
+						href="/dashboard/semester-map"
+						className="mt-2 bg-white border-2 border-blue-900 text-blue-900 px-4 py-2 rounded-md text-sm font-semibold flex items-center gap-2 hover:bg-blue-50"
+					>
 						<Calendar size={16} />
 						VIEW YOUR SEMESTER MAP
-					</button>
+					</Link>
 				</div>
 			</div>
 

@@ -4,10 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/utils/database/supabase/client";
 import type { Student } from "@/types";
-import {
-	parseStudentSlug,
-	validateSlugMatch,
-} from "@/lib/utils/slug";
+import { parseStudentSlug, validateSlugMatch } from "@/lib/utils/slug";
 
 import StudentBackButton from "@/components/students/BackButton";
 import StudentHeaderCard from "@/components/students/StudentHeaderCard";

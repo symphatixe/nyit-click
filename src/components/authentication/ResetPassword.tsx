@@ -47,8 +47,6 @@ export default function ResetPassword() {
 			}, 2000);
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "Failed to reset password");
-		} finally {
-			setLoading(false);
 		}
 	};
 
@@ -83,7 +81,6 @@ export default function ResetPassword() {
 						</p>
 					</div>
 
-					{/* Success Message */}
 					{success && (
 						<div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
 							<div className="flex items-start gap-3">
@@ -100,7 +97,6 @@ export default function ResetPassword() {
 						</div>
 					)}
 
-					{/* Error Alert */}
 					{error && (
 						<div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
 							<div className="flex items-start gap-3">

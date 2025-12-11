@@ -1,5 +1,7 @@
 "use client";
+
 import { useState, useEffect } from "react";
+import { ArrowLeft } from "lucide-react";
 import { Courses } from "@/lib/mockData";
 import { useCourseProgress } from "@/lib/hooks/useCourseProgress";
 import { useCourseSelection } from "@/lib/hooks/useCourseSelection";
@@ -9,13 +11,13 @@ import SemesterGrid from "./SemesterGrid";
 import ProgressSummary from "./ProgressSummary";
 
 interface SemesterMapProps {
-	onSubmit: (completedCourses: string[]) => void;
-	onDismiss?: () => void;
+	onSubmit: () => void;
+	onCancel?: () => void;
 }
 
 export default function SemesterMap({
 	onSubmit,
-	onDismiss,
+	onCancel,
 }: Readonly<SemesterMapProps>) {
 	const [showComponent, setShowComponent] = useState(true);
 
@@ -36,14 +38,12 @@ export default function SemesterMap({
 		setSelection,
 	} = useCourseSelection(savedCourses);
 
-	//sync savedCourses with selectedCourses when data loads
 	useEffect(() => {
 		if (savedCourses.size > 0) {
 			setSelection(savedCourses);
 		}
 	}, [savedCourses, setSelection]);
 
-	//hide component if user has existing progress
 	useEffect(() => {
 		if (hasExistingProgress && !loading) {
 			setShowComponent(false);
@@ -55,21 +55,22 @@ export default function SemesterMap({
 	const handleSubmit = async () => {
 		try {
 			await saveProgress(Array.from(selectedCourses), Courses);
-			onSubmit(Array.from(selectedCourses));
-			setShowComponent(false);
-			if (onDismiss) {
-				onDismiss();
-			}
+			onSubmit();
 		} catch (error) {
+			console.error("Error saving course progress:", error);
 			alert("Error saving course progress. Please try again.");
 		}
 	};
 
-	//loading state
 	if (loading) {
 		return (
 			<div className="max-w-6xl mx-auto p-6">
-				<div className="text-center">Loading your course progress...</div>
+				<div className="text-center">
+					<div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-maincolor" />
+					<p className="mt-4 text-muted-foreground">
+						Loading your course progress...
+					</p>
+				</div>
 			</div>
 		);
 	}
@@ -77,6 +78,17 @@ export default function SemesterMap({
 	if (!showComponent && hasExistingProgress) {
 		return (
 			<div className="max-w-6xl mx-auto p-6">
+				{onCancel && (
+					<button
+						type="button"
+						onClick={onCancel}
+						className="inline-flex items-center gap-2 bg-card border border-border text-maincolor px-4 py-2 rounded-lg hover:bg-muted transition-colors font-medium mb-6"
+					>
+						<ArrowLeft size={18} />
+						Back
+					</button>
+				)}
+
 				<div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
 					<p className="text-green-800 mb-4">
 						✓ Your course progress has been saved!
@@ -84,7 +96,7 @@ export default function SemesterMap({
 					<button
 						type="button"
 						onClick={() => setShowComponent(true)}
-						className="bg-primary hover:bg-secondary text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+						className="bg-maincolor hover:bg-maincolor-dark text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
 					>
 						Update Course Progress
 					</button>
@@ -95,7 +107,23 @@ export default function SemesterMap({
 
 	return (
 		<div className="max-w-6xl mx-auto p-6">
-			<h1 className="text-3xl font-bold mb-4 text-center">Semester Map</h1>
+			<div className="relative mb-8">
+				{onCancel && (
+					<button
+						type="button"
+						onClick={onCancel}
+						className="absolute left-0 top-1/2 -translate-y-1/2 inline-flex items-center gap-2 bg-card border border-border text-maincolor px-4 py-2 rounded-lg hover:bg-muted transition-colors font-medium"
+						aria-label="Go back"
+					>
+						<ArrowLeft size={18} />
+						Back
+					</button>
+				)}
+
+				<h1 className="text-4xl font-bold text-maincolor text-center">
+					Semester Map
+				</h1>
+			</div>
 
 			<QuickSelection
 				coursesBySemester={coursesBySemester}
