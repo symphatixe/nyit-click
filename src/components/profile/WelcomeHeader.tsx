@@ -1,4 +1,4 @@
-// "use client";
+/* "use client";
 // import React, { useState } from "react";
 
 // const WelcomeHeader: React.FC = () => {
@@ -11,8 +11,9 @@
 //             </h1>
 //         </div>
 //     );
-// };
+// }; 
 // export default WelcomeHeader;
+*/
 "use client";
 import { createClient } from "@/lib/utils/database/supabase/client";
 import React, { useEffect, useState } from "react";
