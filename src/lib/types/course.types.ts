@@ -1,10 +1,10 @@
 export interface Course {
 	id: string;
-	code: string;
+	dept_id: string;
 	name: string;
 	credits: number;
-	semester: number;
-	prerequisites?: string[];
+	description: string;
+	course_code: string;
 }
 
 export interface ScheduleBlock {

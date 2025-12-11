@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import ProfessorHeader from "@/components/professor/ProfessorHeader";
 import AverageRatingsCard from "@/components/professor/AverageRatingsCard";
 import CommonTagsCard from "@/components/professor/CommonTagsCard";
 import ReviewsList from "@/components/professor/ReviewList";
-import { mockProfessors, mockReviews } from "@/lib/mockData";
-import type { Professor, ProfessorReview } from "@/types";
+import {
+	getProfessor,
+	getProfessorReviews,
+	getProfessorAverageRating,
+} from "@/lib/services/professorService";
+import type { Professor, CourseReview } from "@/lib/types";
 
-const REVIEWS_PER_PAGE = 5;
+const REVIEWS_PER_PAGE = 7;
 
 interface ProfessorDetailPageProps {
 	params: Promise<{ slug: string }>;
@@ -22,61 +26,65 @@ export default function ProfessorPage({
 	const { slug } = React.use(params);
 	const router = useRouter();
 	const [currentPage, setCurrentPage] = useState(1);
+	const [professor, setProfessor] = useState<Professor | null>(null);
+	const [reviews, setReviews] = useState<CourseReview[]>([]);
+	const [averageRating, setAverageRating] = useState(0);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
-	const professor = useMemo(
-		() => mockProfessors.find((p: Professor) => p.id === slug),
-		[slug],
-	);
+	useEffect(() => {
+		const loadProfessorData = async () => {
+			try {
+				setLoading(true);
+				setError(null);
 
-	const professorReviews = useMemo(
-		() => mockReviews.filter((r: ProfessorReview) => r.professorId === slug),
-		[slug],
-	);
+				// Fetch professor data
+				const prof = await getProfessor(slug);
+				if (!prof) {
+					setError("Professor not found");
+					return;
+				}
+				setProfessor(prof);
 
-	const averageRatings = useMemo(() => {
-		if (professorReviews.length === 0) {
-			return { workload: 0, content: 0, professor: 0 };
-		}
+				// Fetch professor reviews
+				const profReviews = await getProfessorReviews(slug);
+				setReviews(profReviews);
 
-		const avg = (
-			key: keyof Pick<
-				ProfessorReview,
-				"workloadRating" | "contentRating" | "professorRating"
-			>,
-		) =>
-			Math.round(
-				(professorReviews.reduce((sum, r) => sum + r[key], 0) /
-					professorReviews.length) *
-					10,
-			) / 10;
-
-		return {
-			workload: avg("workloadRating"),
-			content: avg("contentRating"),
-			professor: avg("professorRating"),
+				// Calculate average rating
+				const avgRating = await getProfessorAverageRating(slug);
+				setAverageRating(avgRating);
+			} catch (err) {
+				console.error("Error loading professor data:", err);
+				setError("Failed to load professor data");
+			} finally {
+				setLoading(false);
+			}
 		};
-	}, [professorReviews]);
+
+		loadProfessorData();
+	}, [slug]);
 
 	const tagCounts = useMemo(() => {
 		const counts: Record<string, number> = {};
-		for (const review of professorReviews) {
-			for (const tag of review.tags) {
+		for (const review of reviews) {
+			const tags = review.review_tags || [];
+			for (const tag of tags) {
 				counts[tag] = (counts[tag] || 0) + 1;
 			}
 		}
 		return Object.entries(counts)
 			.filter(([, count]) => count > 0)
 			.sort((a, b) => b[1] - a[1]);
-	}, [professorReviews]);
+	}, [reviews]);
 
 	const paginatedReviews = useMemo(() => {
 		const startIdx = (currentPage - 1) * REVIEWS_PER_PAGE;
-		return professorReviews.slice(startIdx, startIdx + REVIEWS_PER_PAGE);
-	}, [professorReviews, currentPage]);
+		return reviews.slice(startIdx, startIdx + REVIEWS_PER_PAGE);
+	}, [reviews, currentPage]);
 
-	const totalPages = Math.ceil(professorReviews.length / REVIEWS_PER_PAGE);
+	const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
 
-	if (!professor) {
+	if (loading) {
 		return (
 			<div className="max-w-4xl mx-auto px-4 py-8">
 				<button
@@ -88,7 +96,25 @@ export default function ProfessorPage({
 					<span>Back</span>
 				</button>
 				<div className="text-center py-12">
-					<p className="text-gray-600">Professor not found</p>
+					<p className="text-gray-600">Loading professor data...</p>
+				</div>
+			</div>
+		);
+	}
+
+	if (error || !professor) {
+		return (
+			<div className="max-w-4xl mx-auto px-4 py-8">
+				<button
+					type="button"
+					onClick={() => router.back()}
+					className="flex items-center gap-2 text-blue-900 hover:text-blue-800 mb-6 transition-colors"
+				>
+					<ArrowLeft size={18} />
+					<span>Back</span>
+				</button>
+				<div className="text-center py-12">
+					<p className="text-gray-600">{error || "Professor not found"}</p>
 				</div>
 			</div>
 		);
@@ -107,14 +133,14 @@ export default function ProfessorPage({
 
 			<div className="space-y-6">
 				<ProfessorHeader
-					name={professor.name}
-					initials={professor.initials}
-					reviewCount={professorReviews.length}
+					name={`${professor.first_name} ${professor.last_name}`}
+					initials={professor.initials || ""}
+					reviewCount={reviews.length}
 				/>
 
 				<AverageRatingsCard
-					averageRatings={averageRatings}
-					hasReviews={professorReviews.length > 0}
+					averageRating={averageRating}
+					hasReviews={reviews.length > 0}
 				/>
 
 				<CommonTagsCard tagCounts={tagCounts} />
