@@ -72,6 +72,7 @@ export default function RatingFeedbackForm() {
 	const [feedback, setFeedback] = useState("");
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [thanks, setThanks] = useState(false);
 
 	// Handle professor search
 	const handleProfessorSearch = useCallback(
@@ -202,7 +203,7 @@ export default function RatingFeedbackForm() {
 			setRating(0);
 			setFeedback("");
 			setSelectedTags([]);
-			alert("Thank you for your feedback!");
+			setThanks(true);
 		} catch (error) {
 			console.error("Error:", error);
 			alert("An unexpected error occurred");
@@ -458,6 +459,13 @@ export default function RatingFeedbackForm() {
 					{isSubmitting ? "Submitting..." : "Submit Feedback"}
 				</button>
 			</form>
+			{thanks && (
+				<div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+					<p className="text-sm text-green-800 font-medium">
+						Your review was uploaded. Thank you for your feedback!
+					</p>
+				</div>
+			)}
 		</div>
 	);
 }
