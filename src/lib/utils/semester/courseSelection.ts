@@ -1,10 +1,12 @@
-import type { Course } from "@/lib/types";
+import type { SemesterMapCourse } from "@/lib/types";
 
 export function isSemesterFullySelected(
-	semesterCourses: Course[],
+	semesterCourses: SemesterMapCourse[],
 	selectedCodes: Set<string>,
 ): boolean {
-	return semesterCourses.every((course) => selectedCodes.has(course.code));
+	return semesterCourses.every((course) =>
+		selectedCodes.has(course.course_code),
+	);
 }
 
 export function toggleCourseSelection(
@@ -22,18 +24,18 @@ export function toggleCourseSelection(
 
 export function toggleSemesterSelection(
 	selectedCourses: Set<string>,
-	semesterCourses: Course[],
+	semesterCourses: SemesterMapCourse[],
 ): Set<string> {
 	const newSelected = new Set(selectedCourses);
 	const allSelected = isSemesterFullySelected(semesterCourses, selectedCourses);
 
 	if (allSelected) {
 		for (const course of semesterCourses) {
-			newSelected.delete(course.code);
+			newSelected.delete(course.course_code);
 		}
 	} else {
 		for (const course of semesterCourses) {
-			newSelected.add(course.code);
+			newSelected.add(course.course_code);
 		}
 	}
 
@@ -42,7 +44,7 @@ export function toggleSemesterSelection(
 
 export function toggleYearSelection(
 	selectedCourses: Set<string>,
-	coursesBySemester: Record<number, Course[]>,
+	coursesBySemester: Record<number, SemesterMapCourse[]>,
 	semesterNumbers: number[],
 ): Set<string> {
 	let newSelected = new Set(selectedCourses);

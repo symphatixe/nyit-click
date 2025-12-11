@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/utils/database/supabase/client";
 import type { User } from "@supabase/supabase-js";
-import type { Course } from "@/lib/types";
+import type { SemesterMapCourse } from "@/lib/types";
 
 interface UseCourseProgressReturn {
 	user: User | null;
@@ -9,7 +9,10 @@ interface UseCourseProgressReturn {
 	hasExistingProgress: boolean;
 	selectedCourses: Set<string>;
 	setSelectedCourses: (courses: Set<string>) => void;
-	saveProgress: (selectedCodes: string[], courses: Course[]) => Promise<void>;
+	saveProgress: (
+		selectedCodes: string[],
+		courses: SemesterMapCourse[],
+	) => Promise<void>;
 	isSubmitting: boolean;
 }
 
@@ -36,12 +39,12 @@ export function useCourseProgress(): UseCourseProgressReturn {
 				.from("user_course_progress")
 				.select(
 					`
-          course_id,
-          completed,
-          courses (
-            course_code
-          )
-        `,
+				course_id,
+				completed,
+				courses (
+					course_code
+				)
+				`,
 				)
 				.eq("user_id", user.id)
 				.eq("completed", true);
@@ -69,7 +72,7 @@ export function useCourseProgress(): UseCourseProgressReturn {
 	}, [loadUserAndProgress]);
 
 	const saveProgress = useCallback(
-		async (selectedCodes: string[], courses: Course[]) => {
+		async (selectedCodes: string[], courses: SemesterMapCourse[]) => {
 			setIsSubmitting(true);
 			try {
 				if (!user) throw new Error("User not authenticated");
@@ -88,17 +91,15 @@ export function useCourseProgress(): UseCourseProgressReturn {
 					throw new Error("No matching courses found in database");
 				}
 
-				//create map of course_code -> course_id
 				const courseMap = new Map<string, string>(
 					coursesData.map((course) => [course.course_code, course.id]),
 				);
 
-				//prepare updates with course_id
 				const updates = selectedCodes
 					.map((courseCode) => {
 						const courseId = courseMap.get(courseCode);
 						const courseFromMockData = courses.find(
-							(c) => c.code === courseCode,
+							(c) => c.course_code === courseCode,
 						);
 
 						if (!courseId || !courseFromMockData) {
@@ -121,7 +122,6 @@ export function useCourseProgress(): UseCourseProgressReturn {
 					throw new Error("No valid course updates to save");
 				}
 
-				//delete all existing progress for this user
 				const { error: deleteError } = await supabase
 					.from("user_course_progress")
 					.delete()
@@ -133,7 +133,6 @@ export function useCourseProgress(): UseCourseProgressReturn {
 					);
 				}
 
-				//insert new progress
 				const { error: insertError } = await supabase
 					.from("user_course_progress")
 					.insert(updates);

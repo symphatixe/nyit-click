@@ -6,7 +6,7 @@ import ScheduleSummary from "@/components/schedule-match/ScheduleSummary";
 import StudentSearchbar from "@/components/schedule-match/StudentSearchBar";
 import StudentList from "@/components/schedule-match/StudentList";
 import Pagination from "@/components/common/Pagination";
-import { mockSchedule, mockStudents } from "@/lib/mockData";
+import { userSchedule } from "@/lib/mockData";
 import type { Student } from "@/types";
 
 const STUDENTS_PER_PAGE = 5;
@@ -19,7 +19,7 @@ export default function ScheduleMatchPage() {
 
 	const uniqueCourses = useMemo(() => {
 		const set = new Set<string>();
-		for (const block of mockSchedule) {
+		for (const block of userSchedule) {
 			if (block.courseCode) {
 				set.add(block.courseCode);
 			}

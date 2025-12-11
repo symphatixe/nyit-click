@@ -1,8 +1,8 @@
-import type { Course } from "@/lib/types";
+import type { SemesterMapCourse } from "@/lib/types";
 import { calculateTotalCredits } from "@/lib/utils/semester/courseGrouping";
 
 interface ProgressSummaryProps {
-	courses: Course[];
+	courses: SemesterMapCourse[];
 	selectedCourses: Set<string>;
 	isSubmitting: boolean;
 	onSubmit: () => void;
@@ -19,7 +19,6 @@ export default function ProgressSummary({
 
 	return (
 		<section className="mt-8 space-y-6">
-			{/* Summary Stats */}
 			<div className="text-center">
 				<div className="inline-flex items-center gap-8 bg-gray-50 rounded-lg px-8 py-4 border border-gray-200">
 					<div>
@@ -36,7 +35,6 @@ export default function ProgressSummary({
 				</div>
 			</div>
 
-			{/* Selected Courses List */}
 			{selectedCodesArray.length > 0 && (
 				<div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
 					<h3 className="text-sm font-semibold text-gray-700 mb-3">
@@ -44,7 +42,7 @@ export default function ProgressSummary({
 					</h3>
 					<div className="flex flex-wrap gap-2">
 						{selectedCodesArray.map((code) => {
-							const course = courses.find((c) => c.code === code);
+							const course = courses.find((c) => c.course_code === code);
 							return (
 								<div
 									key={code}
@@ -63,7 +61,6 @@ export default function ProgressSummary({
 				</div>
 			)}
 
-			{/* Submit Button */}
 			<div className="text-center">
 				<button
 					type="button"

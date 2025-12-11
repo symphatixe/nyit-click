@@ -17,14 +17,14 @@ export default function PlannerPage() {
 	const [schedule, setSchedule] = useState<ScheduleBlock[]>([]);
 	const [profile, setProfile] = useState<AcademicProfile>({
 		major: "Computer Science",
-		enrollmentYear: "2021",
-		completedCourses: ["CSCI 185", "MATH180", "CHEM105"],
+		// enrollmentYear: "2021",
+		completedCourses: [],
 	});
 
 	const [preferences, setPreferences] = useState<SchedulePreferences>({
-		noWeekendClasses: true,
-		noLateNightClasses: true,
-		noMultipleDaysWithLateClasses: true,
+		noWeekendClasses: false,
+		noLateNightClasses: false,
+		noMultipleDaysWithLateClasses: false,
 		additionalPreferences: "",
 	});
 

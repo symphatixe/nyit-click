@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Sparkles } from "lucide-react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
+import { Sparkles, Search, Loader2 } from "lucide-react";
 import CourseChip from "./CourseChip";
 import type { AcademicProfile, SchedulePreferences } from "@/types";
-import { availableCourses } from "@/lib/mockData";
+import type { Course } from "@/lib/types";
+import { searchCourses } from "@/lib/services/courseService";
 
 interface AcademicProfileFormProps {
 	profile: AcademicProfile;
@@ -23,7 +24,10 @@ export default function AcademicProfileForm({
 	onGenerate,
 	loading,
 }: Readonly<AcademicProfileFormProps>) {
-	const [showCourseAdd, setShowCourseAdd] = useState(false);
+	const [courseSearchQuery, setCourseSearchQuery] = useState("");
+	const [courseSearchResults, setCourseSearchResults] = useState<Course[]>([]);
+	const [courseLoading, setCourseLoading] = useState(false);
+	const [showCourseDropdown, setShowCourseDropdown] = useState(false);
 
 	const addCourse = (courseCode: string) => {
 		if (courseCode && !profile.completedCourses.includes(courseCode)) {
@@ -32,7 +36,9 @@ export default function AcademicProfileForm({
 				completedCourses: [...profile.completedCourses, courseCode],
 			});
 		}
-		setShowCourseAdd(false);
+		setCourseSearchQuery("");
+		setCourseSearchResults([]);
+		setShowCourseDropdown(false);
 	};
 
 	const removeCourse = (courseCode: string) => {
@@ -42,6 +48,97 @@ export default function AcademicProfileForm({
 				(course) => course !== courseCode,
 			),
 		});
+	};
+
+	const handleCourseSearch = useCallback(async (query: string) => {
+		setCourseSearchQuery(query);
+
+		if (!query.trim()) {
+			setCourseSearchResults([]);
+			return;
+		}
+
+		setCourseLoading(true);
+		try {
+			const results = await searchCourses(query);
+			setCourseSearchResults(results);
+		} catch (error) {
+			console.error("Error searching courses:", error);
+			setCourseSearchResults([]);
+		} finally {
+			setCourseLoading(false);
+		}
+	}, []);
+
+	const handleSelectCourse = (course: Course) => {
+		addCourse(course.course_code);
+	};
+
+	const courseDropdownRef = useRef<HTMLDivElement | null>(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			const target = event.target as Node;
+
+			if (
+				courseDropdownRef.current &&
+				!courseDropdownRef.current.contains(target)
+			) {
+				setShowCourseDropdown(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
+	const getDropdownContent = () => {
+		if (courseLoading) {
+			return (
+				<div className="p-4 text-center text-gray-500">Loading courses...</div>
+			);
+		}
+
+		if (courseSearchResults.length > 0) {
+			return (
+				<ul className="max-h-64 overflow-y-auto">
+					{courseSearchResults.map((course) => (
+						<li key={course.id}>
+							<button
+								type="button"
+								onClick={() => handleSelectCourse(course)}
+								className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors border-b last:border-b-0"
+							>
+								<div className="font-medium text-gray-800">
+									{course.course_code} - {course.name}
+								</div>
+								{course.credits != null && (
+									<div className="text-xs text-gray-500">
+										{course.credits} credits
+									</div>
+								)}
+							</button>
+						</li>
+					))}
+				</ul>
+			);
+		}
+
+		if (courseSearchQuery.trim()) {
+			return (
+				<div className="p-4 text-center text-gray-500">
+					There is no course with that name.
+				</div>
+			);
+		}
+
+		return (
+			<div className="p-4 text-center text-gray-500">
+				Start typing to search...
+			</div>
+		);
 	};
 
 	return (
@@ -63,7 +160,7 @@ export default function AcademicProfileForm({
 					<div className="space-y-4">
 						<div>
 							<label
-								className="block text-sm font-medium text-gray-700 mb-1"
+								className="block text-sm font-medium text-gray-700 mb-2"
 								htmlFor="majorChoice"
 							>
 								Major
@@ -77,13 +174,13 @@ export default function AcademicProfileForm({
 								id="majorChoice"
 							>
 								<option>Computer Science</option>
-								<option>Mathematics</option>
+								{/* <option>Mathematics</option>
 								<option>Physics</option>
-								<option>Engineering</option>
+								<option>Engineering</option> */}
 							</select>
 						</div>
 
-						<div>
+						{/* <div>
 							<label
 								className="block text-sm font-medium text-gray-700 mb-1"
 								htmlFor="yearChoice"
@@ -103,47 +200,51 @@ export default function AcademicProfileForm({
 								<option>2023</option>
 								<option>2024</option>
 							</select>
-						</div>
+						</div> */}
 
 						<div>
 							<label
 								className="block text-sm font-medium text-gray-700 mb-2"
-								htmlFor="courseSelect"
+								htmlFor="completedCourseSearch"
 							>
 								Completed Courses
 							</label>
+
 							<div className="flex flex-wrap gap-2 mb-2">
-								{profile.completedCourses.map((course) => (
+								{profile.completedCourses.map((courseCode) => (
 									<CourseChip
-										key={course}
-										course={course}
-										onRemove={() => removeCourse(course)}
+										key={courseCode}
+										course={courseCode}
+										onRemove={() => removeCourse(courseCode)}
 									/>
 								))}
 							</div>
 
-							{showCourseAdd ? (
-								<select
-									onChange={(e) => addCourse(e.target.value)}
-									className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-									id="courseSelect"
-								>
-									<option value="">Select a course...</option>
-									{availableCourses.map((course) => (
-										<option key={course.id} value={course.code}>
-											{course.code} - {course.name}
-										</option>
-									))}
-								</select>
-							) : (
-								<button
-									onClick={() => setShowCourseAdd(true)}
-									className="text-blue-600 text-sm flex items-center gap-1 hover:text-blue-700"
-								>
-									<Plus size={16} />
-									Add more courses
-								</button>
-							)}
+							<div ref={courseDropdownRef} className="relative">
+								<div className="flex items-center bg-white border border-gray-300 rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent">
+									<Search className="mr-2 text-gray-400" size={18} />
+									<input
+										id="completedCoursesSearch"
+										value={courseSearchQuery}
+										onChange={(e) => {
+											handleCourseSearch(e.target.value); // your async search
+											setShowCourseDropdown(true); // 🔹 open when typing
+										}}
+										onFocus={() => setShowCourseDropdown(true)} // 🔹 open on focus
+										placeholder="Search and add completed courses..."
+										className="w-full text-sm bg-transparent outline-none"
+									/>
+									{courseLoading && (
+										<Loader2 className="animate-spin text-gray-400" size={18} />
+									)}
+								</div>
+
+								{showCourseDropdown && (
+									<div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+										{getDropdownContent()}
+									</div>
+								)}
+							</div>
 						</div>
 					</div>
 				</div>

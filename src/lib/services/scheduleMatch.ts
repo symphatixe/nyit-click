@@ -4,7 +4,7 @@ import type {
 	ScheduleBlock,
 	Course,
 } from "@/types";
-import { mockSchedule, availableCourses } from "@/lib/mockData";
+import { generatedSchedule } from "@/lib/mockData";
 
 // API functions - currently using mock data
 // Replace these with actual API calls when backend is ready

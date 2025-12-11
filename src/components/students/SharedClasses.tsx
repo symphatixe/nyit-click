@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { BookOpen } from "lucide-react";
 import type { Student } from "@/types";
-import { mockSchedule } from "@/lib/mockData";
+import { userSchedule } from "@/lib/mockData";
 
 export default function SharedClassesSection({
 	student,
@@ -12,7 +12,7 @@ export default function SharedClassesSection({
 		() =>
 			student.sharedClasses.map((courseCode) => ({
 				courseCode,
-				times: mockSchedule
+				times: userSchedule
 					.filter((b) => b.courseCode === courseCode)
 					.map((b) => `${b.day} ${b.startTime}-${b.endTime}`)
 					.join(" • "),

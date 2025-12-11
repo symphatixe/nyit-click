@@ -1,12 +1,12 @@
-import type { Course } from "@/lib/types";
+import type { SemesterMapCourse } from "@/lib/types";
 import { getSemestersInYear } from "@/lib/utils/semester/courseGrouping";
 
 interface QuickSelectionProps {
-	coursesBySemester: Record<number, Course[]>;
-	isSemesterSelected: (semesterCourses: Course[]) => boolean;
-	toggleSemester: (semesterCourses: Course[]) => void;
+	coursesBySemester: Record<number, SemesterMapCourse[]>;
+	isSemesterSelected: (semesterCourses: SemesterMapCourse[]) => boolean;
+	toggleSemester: (semesterCourses: SemesterMapCourse[]) => void;
 	toggleYear: (
-		coursesBySemester: Record<number, Course[]>,
+		coursesBySemester: Record<number, SemesterMapCourse[]>,
 		semesterNumbers: number[],
 	) => void;
 }

@@ -103,6 +103,30 @@ body {
 	border-color: hsl(var(--maincolor));
 }
 
+@utility bg-accent-gold {
+	background-color: hsl(var(--accent-gold));
+}
+
+@utility text-accent-gold {
+	color: hsl(var(--accent-gold));
+}
+
+@utility border-maincolor {
+	border-color: hsl(var(--maincolor));
+}
+
+@utility bg-card {
+	background-color: hsl(var(--card));
+}
+
+@utility text-card-foreground {
+	color: hsl(var(--card-foreground));
+}
+
+@utility border-border {
+	border-color: hsl(var(--border));
+}
+
 @theme inline {
 	--color-background: hsl(var(--background));
 	--color-foreground: hsl(var(--foreground));

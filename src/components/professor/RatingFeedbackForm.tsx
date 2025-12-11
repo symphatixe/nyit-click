@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Star, Search, Loader2 } from "lucide-react";
 import { searchProfessors } from "@/lib/services/professorService";
 import { searchCourses } from "@/lib/services/courseService";
@@ -63,7 +63,9 @@ export default function RatingFeedbackForm() {
 	const [courseSearchResults, setCourseSearchResults] = useState<Course[]>([]);
 	const [courseLoading, setCourseLoading] = useState(false);
 	const [showCourseDropdown, setShowCourseDropdown] = useState(false);
-	const [selectedProfessor, setSelectedProfessor] = useState<Professor | null>(null);
+	const [selectedProfessor, setSelectedProfessor] = useState<Professor | null>(
+		null,
+	);
 	const [professorSearchQuery, setProfessorSearchQuery] = useState("");
 	const [profSearchResults, setProfSearchResults] = useState<Professor[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -74,51 +76,43 @@ export default function RatingFeedbackForm() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [thanks, setThanks] = useState(false);
 
-	// Handle professor search
-	const handleProfessorSearch = useCallback(
-		async (query: string) => {
-			setProfessorSearchQuery(query);
-			if (!query.trim()) {
-				setProfSearchResults([]);
-				return;
-			}
+	const handleProfessorSearch = useCallback(async (query: string) => {
+		setProfessorSearchQuery(query);
+		if (!query.trim()) {
+			setProfSearchResults([]);
+			return;
+		}
 
-			setLoading(true);
-			try {
-				const results = await searchProfessors(query);
-				setProfSearchResults(results);
-			} catch (error) {
-				console.error("Error searching professors:", error);
-				setProfSearchResults([]);
-			} finally {
-				setLoading(false);
-			}
-		},
-		[]
-	);
+		setLoading(true);
+		try {
+			const results = await searchProfessors(query);
+			setProfSearchResults(results);
+		} catch (error) {
+			console.error("Error searching professors:", error);
+			setProfSearchResults([]);
+		} finally {
+			setLoading(false);
+		}
+	}, []);
 
-	// Handle course search
-	const handleCourseSearch = useCallback(
-		async (query: string) => {
-			setCourseSearchQuery(query);
-			if (!query.trim()) {
-				setCourseSearchResults([]);
-				return;
-			}
+	const handleCourseSearch = useCallback(async (query: string) => {
+		setCourseSearchQuery(query);
+		if (!query.trim()) {
+			setCourseSearchResults([]);
+			return;
+		}
 
-			setCourseLoading(true);
-			try {
-				const results = await searchCourses(query);
-				setCourseSearchResults(results);
-			} catch (error) {
-				console.error("Error searching courses:", error);
-				setCourseSearchResults([]);
-			} finally {
-				setCourseLoading(false);
-			}
-		},
-		[]
-	);
+		setCourseLoading(true);
+		try {
+			const results = await searchCourses(query);
+			setCourseSearchResults(results);
+		} catch (error) {
+			console.error("Error searching courses:", error);
+			setCourseSearchResults([]);
+		} finally {
+			setCourseLoading(false);
+		}
+	}, []);
 
 	const selectProfessor = (professor: Professor) => {
 		setSelectedProfessor(professor);
@@ -195,7 +189,6 @@ export default function RatingFeedbackForm() {
 				return;
 			}
 
-			// Reset form
 			setSelectedCourse(null);
 			setCourseSearchQuery("");
 			setSelectedProfessor(null);
@@ -212,6 +205,125 @@ export default function RatingFeedbackForm() {
 		}
 	};
 
+	const getDropdownContent = () => {
+		if (courseLoading) {
+			return (
+				<div className="p-4 text-center text-gray-500">Loading courses...</div>
+			);
+		}
+
+		if (courseSearchResults.length > 0) {
+			return (
+				<ul className="max-h-64 overflow-y-auto">
+					{courseSearchResults.map((course) => (
+						<li key={course.id}>
+							<button
+								type="button"
+								onClick={() => selectCourse(course)}
+								className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors border-b last:border-b-0"
+							>
+								<div className="font-medium text-gray-800">
+									{course.course_code} - {course.name}
+								</div>
+								{course.credits != null && (
+									<div className="text-xs text-gray-500">
+										{course.credits} credits
+									</div>
+								)}
+							</button>
+						</li>
+					))}
+				</ul>
+			);
+		}
+
+		if (courseSearchQuery.trim()) {
+			return (
+				<div className="p-4 text-center text-gray-500">
+					There is no course with that name.
+				</div>
+			);
+		}
+
+		return (
+			<div className="p-4 text-center text-gray-500">
+				Start typing to search...
+			</div>
+		);
+	};
+
+	const courseDropdownRef = useRef<HTMLDivElement | null>(null);
+	const professorDropdownRef = useRef<HTMLDivElement | null>(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			const target = event.target as Node;
+
+			if (
+				courseDropdownRef.current &&
+				!courseDropdownRef.current.contains(target)
+			) {
+				setShowCourseDropdown(false);
+			}
+
+			if (
+				professorDropdownRef.current &&
+				!professorDropdownRef.current.contains(target)
+			) {
+				setShowProfessorDropdown(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
+	const getProfessorDropdownContent = () => {
+		if (loading) {
+			return (
+				<div className="p-4 text-center text-gray-500">
+					Loading professors...
+				</div>
+			);
+		}
+
+		if (profSearchResults.length > 0) {
+			return (
+				<ul className="max-h-64 overflow-y-auto">
+					{profSearchResults.map((prof) => (
+						<li key={prof.id}>
+							<button
+								type="button"
+								onClick={() => selectProfessor(prof)}
+								className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors border-b last:border-b-0"
+							>
+								<div className="font-medium text-gray-800">
+									{prof.first_name} {prof.last_name}
+								</div>
+							</button>
+						</li>
+					))}
+				</ul>
+			);
+		}
+
+		if (professorSearchQuery.trim()) {
+			return (
+				<div className="p-4 text-center text-gray-500">
+					There is no professor with that name. Did you misspell it?
+				</div>
+			);
+		}
+
+		return (
+			<div className="p-4 text-center text-gray-500">
+				Start typing to search...
+			</div>
+		);
+	};
+
 	return (
 		<div className="bg-white rounded-lg border border-gray-200 p-6">
 			<p className="text-sm text-gray-600 mb-6">
@@ -219,7 +331,6 @@ export default function RatingFeedbackForm() {
 			</p>
 
 			<form onSubmit={handleSubmit} className="space-y-6">
-				{/* Course Search */}
 				<div>
 					<label
 						className="block text-sm font-semibold text-gray-700 mb-3"
@@ -227,59 +338,28 @@ export default function RatingFeedbackForm() {
 					>
 						Select course
 					</label>
-					<div className="relative">
+					<div ref={courseDropdownRef} className="relative">
 						<div className="flex items-center bg-white border border-gray-300 rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent">
 							<Search className="mr-2 text-gray-400" size={18} />
 							<input
-								id="courseSearch"
+								id="completedCoursesSearch"
 								value={courseSearchQuery}
 								onChange={(e) => {
-									handleCourseSearch(e.target.value);
-									setShowCourseDropdown(true);
+									handleCourseSearch(e.target.value); // your async search
+									setShowCourseDropdown(true); // 🔹 open when typing
 								}}
-								onFocus={() => setShowCourseDropdown(true)}
-								placeholder="Search courses..."
+								onFocus={() => setShowCourseDropdown(true)} // 🔹 open on focus
+								placeholder="Search courses"
 								className="w-full text-sm bg-transparent outline-none"
-								required={!selectedCourse}
 							/>
-							{courseLoading && <Loader2 className="animate-spin text-gray-400" size={18} />}
+							{courseLoading && (
+								<Loader2 className="animate-spin text-gray-400" size={18} />
+							)}
 						</div>
 
-						{/* Dropdown Results */}
 						{showCourseDropdown && (
 							<div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-								{courseLoading ? (
-									<div className="p-4 text-center text-gray-500">
-										Loading courses...
-									</div>
-								) : courseSearchResults.length > 0 ? (
-									<ul className="max-h-64 overflow-y-auto">
-										{courseSearchResults.map((course) => (
-											<li key={course.id}>
-												<button
-													type="button"
-													onClick={() => selectCourse(course)}
-													className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors border-b last:border-b-0"
-												>
-													<div className="font-medium text-gray-800">
-														{course.course_code} - {course.name}
-													</div>
-													<div className="text-xs text-gray-500">
-														{course.credits} credits
-													</div>
-												</button>
-											</li>
-										))}
-									</ul>
-								) : courseSearchQuery.trim() ? (
-									<div className="p-4 text-center text-gray-500">
-										There is no course with that name.
-									</div>
-								) : (
-									<div className="p-4 text-center text-gray-500">
-										Start typing to search...
-									</div>
-								)}
+								{getDropdownContent()}
 							</div>
 						)}
 					</div>
@@ -300,7 +380,6 @@ export default function RatingFeedbackForm() {
 					)}
 				</div>
 
-				{/* Professor Search */}
 				<div>
 					<label
 						className="block text-sm font-semibold text-gray-700 mb-3"
@@ -323,43 +402,35 @@ export default function RatingFeedbackForm() {
 								className="w-full text-sm bg-transparent outline-none"
 								required={!selectedProfessor}
 							/>
-							{loading && <Loader2 className="animate-spin text-gray-400" size={18} />}
+							{loading && (
+								<Loader2 className="animate-spin text-gray-400" size={18} />
+							)}
 						</div>
 
-						{/* Dropdown Results */}
-						{showProfessorDropdown && (
-							<div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-								{loading ? (
-									<div className="p-4 text-center text-gray-500">
-										Loading professors...
-									</div>
-								) : profSearchResults.length > 0 ? (
-									<ul className="max-h-64 overflow-y-auto">
-										{profSearchResults.map((prof) => (
-											<li key={prof.id}>
-												<button
-													type="button"
-													onClick={() => selectProfessor(prof)}
-													className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors border-b last:border-b-0"
-												>
-													<div className="font-medium text-gray-800">
-														{prof.first_name} {prof.last_name}
-													</div>
-												</button>
-											</li>
-										))}
-									</ul>
-								) : professorSearchQuery.trim() ? (
-									<div className="p-4 text-center text-gray-500">
-										There is no professor with that name. Did you misspell it?
-									</div>
-								) : (
-									<div className="p-4 text-center text-gray-500">
-										Start typing to search...
-									</div>
+						<div ref={professorDropdownRef} className="relative">
+							<div className="flex items-center bg-white border border-gray-300 rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent">
+								<Search className="mr-2 text-gray-400" size={18} />
+								<input
+									value={professorSearchQuery}
+									onChange={(e) => {
+										handleProfessorSearch(e.target.value);
+										setShowProfessorDropdown(true);
+									}}
+									onFocus={() => setShowProfessorDropdown(true)}
+									placeholder="Search professors..."
+									className="w-full text-sm bg-transparent outline-none"
+								/>
+								{loading && (
+									<Loader2 className="animate-spin text-gray-400" size={18} />
 								)}
 							</div>
-						)}
+
+							{showProfessorDropdown && (
+								<div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+									{getProfessorDropdownContent()}
+								</div>
+							)}
+						</div>
 					</div>
 
 					{selectedProfessor && (
@@ -385,11 +456,7 @@ export default function RatingFeedbackForm() {
 					>
 						Rate your experience
 					</label>
-					<StarRating
-						label="Rating"
-						rating={rating}
-						onRating={setRating}
-					/>
+					<StarRating label="Rating" rating={rating} onRating={setRating} />
 				</div>
 
 				<div>
@@ -469,4 +536,3 @@ export default function RatingFeedbackForm() {
 		</div>
 	);
 }
-

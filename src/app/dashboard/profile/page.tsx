@@ -5,7 +5,7 @@ import ProfilePic from "@/components/common/ProfilePicture";
 import ProfileBio from "@/components/profile/ProfileBio";
 import SemesterProgress from "@/components/profile/SemesterProgress";
 import ClassSchedule from "@/components/profile/ClassSchedule";
-import { mockSchedule } from "@/lib/mockData";
+import { userSchedule } from "@/lib/mockData";
 import { useGroupedSchedule } from "@/lib/hooks/useGroupedSchedule";
 import { getWeeksBetween, getWeeksPassed } from "@/lib/utils/date";
 import LogoutButton from "@/components/authentication/Logout";
@@ -16,7 +16,7 @@ export default function Profile() {
 
 	const totalWeeks = getWeeksBetween(semesterStart, semesterEnd);
 	const weeksPassed = getWeeksPassed(semesterStart, new Date(), totalWeeks);
-	const groupedCourses = useGroupedSchedule(mockSchedule);
+	const groupedCourses = useGroupedSchedule(userSchedule);
 
 	const todayIndex = new Date().getDay();
 
@@ -26,11 +26,9 @@ export default function Profile() {
 				<div className="flex-1">
 					<WelcomeHeader />
 				</div>
-				<div className="shrink-0">
+				<div className="shrink-0 flex flex-col items-center gap-2">
 					<ProfilePic />
-					<div className="py-2">
-						<LogoutButton />
-					</div>
+					<LogoutButton />
 				</div>
 			</div>
 

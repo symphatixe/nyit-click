@@ -1,12 +1,12 @@
-import type { Course } from "@/lib/types";
+import type { SemesterMapCourse } from "@/lib/types";
 import CourseCard from "./CourseCard";
 
 interface SemesterGridProps {
-	coursesBySemester: Record<number, Course[]>;
+	coursesBySemester: Record<number, SemesterMapCourse[]>;
 	selectedCourses: Set<string>;
-	isSemesterSelected: (semesterCourses: Course[]) => boolean;
+	isSemesterSelected: (semesterCourses: SemesterMapCourse[]) => boolean;
 	toggleCourse: (courseCode: string) => void;
-	toggleSemester: (semesterCourses: Course[]) => void;
+	toggleSemester: (semesterCourses: SemesterMapCourse[]) => void;
 }
 
 export default function SemesterGrid({
@@ -26,7 +26,6 @@ export default function SemesterGrid({
 						key={semester}
 						className="bg-white rounded-lg shadow-md p-6 border-2 border-gray-200"
 					>
-						{/* Semester Header */}
 						<div className="flex justify-between items-center mb-4">
 							<h2 className="text-xl font-semibold text-blue-600">
 								Semester {semester}
@@ -43,14 +42,13 @@ export default function SemesterGrid({
 							</button>
 						</div>
 
-						{/* Course List */}
 						<div className="space-y-3">
 							{semesterCourses.map((course) => (
 								<CourseCard
-									key={course.code}
+									key={course.course_code}
 									course={course}
-									isSelected={selectedCourses.has(course.code)}
-									onToggle={() => toggleCourse(course.code)}
+									isSelected={selectedCourses.has(course.course_code)}
+									onToggle={() => toggleCourse(course.course_code)}
 								/>
 							))}
 						</div>

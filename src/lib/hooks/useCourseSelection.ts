@@ -1,7 +1,5 @@
-// lib/hooks/useCourseSelection.ts
-
 import { useState, useCallback } from "react";
-import type { Course } from "@/lib/types";
+import type { SemesterMapCourse } from "@/lib/types";
 import {
 	toggleCourseSelection,
 	toggleSemesterSelection,
@@ -12,12 +10,12 @@ import {
 interface UseCourseSelectionReturn {
 	selectedCourses: Set<string>;
 	toggleCourse: (courseCode: string) => void;
-	toggleSemester: (semesterCourses: Course[]) => void;
+	toggleSemester: (semesterCourses: SemesterMapCourse[]) => void;
 	toggleYear: (
-		coursesBySemester: Record<number, Course[]>,
+		coursesBySemester: Record<number, SemesterMapCourse[]>,
 		semesterNumbers: number[],
 	) => void;
-	isSemesterSelected: (semesterCourses: Course[]) => boolean;
+	isSemesterSelected: (semesterCourses: SemesterMapCourse[]) => boolean;
 	clearSelection: () => void;
 	setSelection: (codes: Set<string>) => void;
 }
@@ -31,7 +29,7 @@ export function useCourseSelection(
 		setSelectedCourses((prev) => toggleCourseSelection(prev, courseCode));
 	}, []);
 
-	const toggleSemester = useCallback((semesterCourses: Course[]) => {
+	const toggleSemester = useCallback((semesterCourses: SemesterMapCourse[]) => {
 		setSelectedCourses((prev) =>
 			toggleSemesterSelection(prev, semesterCourses),
 		);
@@ -39,7 +37,7 @@ export function useCourseSelection(
 
 	const toggleYear = useCallback(
 		(
-			coursesBySemester: Record<number, Course[]>,
+			coursesBySemester: Record<number, SemesterMapCourse[]>,
 			semesterNumbers: number[],
 		) => {
 			setSelectedCourses((prev) =>
@@ -50,7 +48,7 @@ export function useCourseSelection(
 	);
 
 	const isSemesterSelected = useCallback(
-		(semesterCourses: Course[]) => {
+		(semesterCourses: SemesterMapCourse[]) => {
 			return isSemesterFullySelected(semesterCourses, selectedCourses);
 		},
 		[selectedCourses],

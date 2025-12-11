@@ -1,7 +1,7 @@
-import type { Course } from "@/lib/types";
+import type { SemesterMapCourse } from "@/lib/types";
 
 interface CourseCardProps {
-	course: Course;
+	course: SemesterMapCourse;
 	isSelected: boolean;
 	onToggle: () => void;
 }
@@ -21,14 +21,14 @@ export default function CourseCard({
 					: "bg-gray-50 border-gray-300 hover:bg-gray-100"
 			}`}
 			aria-pressed={isSelected}
-			aria-label={`${isSelected ? "Deselect" : "Select"} ${course.code} - ${
-				course.name
-			}`}
+			aria-label={`${isSelected ? "Deselect" : "Select"} ${
+				course.course_code
+			} - ${course.name}`}
 		>
 			<div className="flex items-center justify-between">
 				<div className="flex-1 min-w-0">
 					<h3 className="font-semibold text-gray-800 truncate">
-						{course.code}
+						{course.course_code}
 					</h3>
 					<p className="text-sm text-gray-600 truncate">{course.name}</p>
 				</div>

@@ -1,9 +1,9 @@
-import type { Course } from "@/lib/types";
+import type { SemesterMapCourse } from "@/lib/types";
 
 export function groupCoursesBySemester(
-	courses: Course[],
-): Record<number, Course[]> {
-	return courses.reduce<Record<number, Course[]>>((acc, course) => {
+	courses: SemesterMapCourse[],
+): Record<number, SemesterMapCourse[]> {
+	return courses.reduce<Record<number, SemesterMapCourse[]>>((acc, course) => {
 		const { semester } = course;
 		acc[semester] ??= [];
 		acc[semester].push(course);
@@ -12,11 +12,11 @@ export function groupCoursesBySemester(
 }
 
 export function calculateTotalCredits(
-	courses: Course[],
+	courses: SemesterMapCourse[],
 	selectedCodes: Set<string>,
 ): number {
 	return courses
-		.filter((course) => selectedCodes.has(course.code))
+		.filter((course) => selectedCodes.has(course.course_code))
 		.reduce((sum, course) => sum + course.credits, 0);
 }
 

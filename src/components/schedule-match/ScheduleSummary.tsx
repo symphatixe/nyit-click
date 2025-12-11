@@ -1,14 +1,9 @@
 import React from "react";
 
-interface ScheduleSummaryProps {
-	semester: string;
-	courses: string[];
-}
-
 export default function ScheduleSummary({
 	semester,
 	courses,
-}: Readonly<ScheduleSummaryProps>) {
+}: Readonly<{ semester: string; courses: string[] }>) {
 	if (courses.length === 0) return null;
 
 	return (

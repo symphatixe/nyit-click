@@ -7,6 +7,14 @@ export interface Course {
 	course_code: string;
 }
 
+export interface SemesterMapCourse {
+	id: string;
+	course_code: string;
+	name: string;
+	credits: number;
+	semester: number;
+}
+
 export interface ScheduleBlock {
 	courseCode: string;
 	courseName: string;
@@ -20,7 +28,7 @@ export interface ScheduleBlock {
 
 export interface AcademicProfile {
 	major: string;
-	enrollmentYear: string;
+	// enrollmentYear: string;
 	completedCourses: string[];
 }
 

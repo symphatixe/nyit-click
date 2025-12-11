@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/utils/database/supabase/client";
-import type { Course } from "@/types"; 
-
+import type { Course } from "@/types";
 
 export async function searchCourses(query: string): Promise<Course[]> {
 	const client = createClient();
