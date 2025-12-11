@@ -65,11 +65,6 @@ Make informed decisions with comprehensive course reviews aggregated from studen
 Course difficulty ratings and workload expectations • Professor teaching styles and grading practices  
 Time commitment requirements • Realistic expectations before enrollment
 
-### 📚 Resource Sharing
-Access a community-curated catalog of academic resources including:  
-YouTube tutorials and supplemental videos • Helpful websites and online tools  
-Course-specific study materials • Professor-recommended resources
-
 **Everything you need, exactly when you need it.**
 
 </div>
@@ -146,10 +141,10 @@ Designed to support students from their first semester through graduation and be
 **Senior Project Team 8**
 
 **Vadim Kan** - Team Leader & Lead Developer  
-**Alan Yuan** - Frontend Developer & Lead Designer  
-**Jason Li** - Backend Developer  
-**Ali Khachab** - Project Manager & Backend Developer  
-**David Cano** - Frontend Developer & Database
+**Alan Yuan** - Frontend Developer & Project Manager <br>
+**Jason Li** - Backend Developer & Database Management <br>
+**Ali Khachab** - Secondary Team Leader & Backend Developer  
+**David Cano** - Frontend Developer & Lead Designer
 
 </div>
 
