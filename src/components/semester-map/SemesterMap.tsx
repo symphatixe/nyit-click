@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
-import { Courses } from "@/lib/mockData";
+import { Courses } from "@/lib/data";
 import { useCourseProgress } from "@/lib/hooks/useCourseProgress";
 import { useCourseSelection } from "@/lib/hooks/useCourseSelection";
 import { groupCoursesBySemester } from "@/lib/utils/semester/courseGrouping";

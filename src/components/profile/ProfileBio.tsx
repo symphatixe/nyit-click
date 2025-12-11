@@ -23,7 +23,8 @@ const ProfileBio: React.FC = () => {
 			try {
 				const supabase = createClient();
 
-				const { data: authData, error: userError } = await supabase.auth.getUser();
+				const { data: authData, error: userError } =
+					await supabase.auth.getUser();
 
 				if (userError || !authData.user) {
 					setError("Unable to fetch user");
@@ -155,13 +156,15 @@ const ProfileBio: React.FC = () => {
 				/>
 
 				<div className="mt-2 flex justify-between items-center text-xs text-gray-600 mb-4">
-					{
-                        charCount > MAX_CHARS * 0.9 ? (
-                                <span className="text-orange-600">{charCount}/{MAX_CHARS} characters</span>
-                            ) : (
-                            <span>{charCount}/{MAX_CHARS} characters</span>	
-                        ) 
-                    }
+					{charCount > MAX_CHARS * 0.9 ? (
+						<span className="text-orange-600">
+							{charCount}/{MAX_CHARS} characters
+						</span>
+					) : (
+						<span>
+							{charCount}/{MAX_CHARS} characters
+						</span>
+					)}
 				</div>
 
 				{saveError && (

@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { BookOpen } from "lucide-react";
 import type { Student } from "@/types";
-import { userSchedule } from "@/lib/mockData";
+import { userSchedule } from "@/lib/data";
 
 export default function SharedClassesSection({
 	student,

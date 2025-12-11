@@ -6,21 +6,7 @@ import { searchProfessors } from "@/lib/services/professorService";
 import { searchCourses } from "@/lib/services/courseService";
 import { createClient } from "@/lib/utils/database/supabase/client";
 import type { Course, Professor } from "@/lib/types";
-
-const TAGS = [
-	"easy homework",
-	"hard homework",
-	"group projects",
-	"helpful office hours",
-	"fair grading",
-	"heavy reading",
-	"hard exams",
-	"engaging lectures",
-	"lenient grading",
-	"strict attendance",
-	"lots of assignments",
-	"practical applications",
-];
+import { TAGS } from "@/lib/data";
 
 interface StarRatingProps {
 	label: string;

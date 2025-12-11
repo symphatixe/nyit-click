@@ -33,6 +33,11 @@ export function useCourseProgress(): UseCourseProgressReturn {
 				data: { user },
 			} = await supabase.auth.getUser();
 
+			if (!user) {
+				alert("You must be logged in to submit feedback");
+				return;
+			}
+
 			setUser(user);
 
 			const { data: userProgress, error } = await supabase
@@ -54,8 +59,10 @@ export function useCourseProgress(): UseCourseProgressReturn {
 			if (userProgress && userProgress.length > 0) {
 				const completedCourses = new Set(
 					userProgress
-						.filter((progress: any) => progress.courses?.course_code)
-						.map((progress: any) => progress.courses.course_code),
+						// @ts-expect-error - supabase join query inference
+						.filter((progress) => progress.courses?.course_code)
+						// @ts-expect-error- supabase join query inference
+						.map((progress) => progress.courses.course_code),
 				);
 				setSelectedCourses(completedCourses);
 				setHasExistingProgress(true);

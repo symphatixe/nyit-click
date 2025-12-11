@@ -306,3 +306,18 @@ export const Courses: SemesterMapCourse[] = [
 		semester: 8,
 	},
 ];
+
+export const TAGS = [
+	"easy homework",
+	"hard homework",
+	"group projects",
+	"helpful office hours",
+	"fair grading",
+	"heavy reading",
+	"hard exams",
+	"engaging lectures",
+	"lenient grading",
+	"strict attendance",
+	"lots of assignments",
+	"practical applications",
+];

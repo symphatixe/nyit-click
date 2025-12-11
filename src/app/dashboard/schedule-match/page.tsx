@@ -6,7 +6,7 @@ import ScheduleSummary from "@/components/schedule-match/ScheduleSummary";
 import StudentSearchbar from "@/components/schedule-match/StudentSearchBar";
 import StudentList from "@/components/schedule-match/StudentList";
 import Pagination from "@/components/common/Pagination";
-import { userSchedule } from "@/lib/mockData";
+import { userSchedule } from "@/lib/data";
 import type { Student } from "@/types";
 
 const STUDENTS_PER_PAGE = 5;

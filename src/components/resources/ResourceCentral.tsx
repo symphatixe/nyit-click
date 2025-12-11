@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { mockSchedule } from "../../lib/mockData";
+import { mockSchedule } from "../../lib/data";
 import {
 	FileText,
 	Link as LinkIcon,

@@ -5,7 +5,7 @@ import ProfilePic from "@/components/common/ProfilePicture";
 import ProfileBio from "@/components/profile/ProfileBio";
 import SemesterProgress from "@/components/profile/SemesterProgress";
 import ClassSchedule from "@/components/profile/ClassSchedule";
-import { userSchedule } from "@/lib/mockData";
+import { userSchedule } from "@/lib/data";
 import { useGroupedSchedule } from "@/lib/hooks/useGroupedSchedule";
 import { getWeeksBetween, getWeeksPassed } from "@/lib/utils/date";
 import LogoutButton from "@/components/authentication/Logout";

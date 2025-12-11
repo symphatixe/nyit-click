@@ -18,7 +18,7 @@ export default function ProfessorLookup() {
 	const [loading, setLoading] = useState(false);
 	const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
-	// Load initial top 5 professors
+	// Load initial top 5 professors alphabetically
 	useEffect(() => {
 		const loadInitialProfessors = async () => {
 			setLoading(true);
@@ -90,6 +90,74 @@ export default function ProfessorLookup() {
 		router.push(`/dashboard/rating/professor/${profId}`);
 	};
 
+	const renderProfessorCard = (prof: Professor) => (
+		<button
+			key={prof.id}
+			onClick={() => handleProfessorClick(prof.id)}
+			aria-label={`View ${prof.first_name} ${prof.last_name}'s profile`}
+			className="w-full text-left bg-gray-50 border border-gray-100 rounded-md p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 hover:scale-[1.02] active:scale-[0.98]"
+		>
+			<div className="flex items-start gap-3">
+				<div className="w-12 h-12 rounded-full bg-blue-900 text-white flex items-center justify-center shrink-0 font-semibold text-sm">
+					{prof.initials}
+				</div>
+
+				<div className="min-w-0 flex-1">
+					<h3 className="font-semibold text-gray-800 text-sm">
+						{prof.first_name} {prof.last_name}
+					</h3>
+
+					<div className="mt-2 flex flex-wrap gap-1">
+						{prof.commonTags && prof.commonTags.length > 0 ? (
+							prof.commonTags.map((tag) => (
+								<span
+									key={tag}
+									className="inline-block text-xs bg-blue-100 text-blue-900 px-2 py-1 rounded-full"
+								>
+									{tag}
+								</span>
+							))
+						) : (
+							<span className="text-xs text-gray-400">No tags yet</span>
+						)}
+					</div>
+				</div>
+			</div>
+		</button>
+	);
+
+	const renderProfessorContent = () => {
+		if (loading && !initialLoadComplete) {
+			return (
+				<div className="text-center py-8">
+					<p className="text-sm text-gray-500">Loading professors...</p>
+				</div>
+			);
+		}
+
+		if (professorsToDisplay.length > 0) {
+			return (
+				<>{professorsToDisplay.map((prof) => renderProfessorCard(prof))}</>
+			);
+		}
+
+		if (searchQuery.trim()) {
+			return (
+				<div className="text-center py-8">
+					<p className="text-sm text-gray-500">
+						There is no professor with that name. Did you misspell it?
+					</p>
+				</div>
+			);
+		}
+
+		return (
+			<div className="text-center py-8">
+				<p className="text-sm text-gray-500">No professors found</p>
+			</div>
+		);
+	};
+
 	return (
 		<div className="bg-white rounded-lg border border-gray-200 p-6 h-fit">
 			<div>
@@ -115,56 +183,7 @@ export default function ProfessorLookup() {
 			</div>
 
 			<div className="space-y-3 max-h-96 overflow-y-auto">
-				{loading && !initialLoadComplete ? (
-					<div className="text-center py-8">
-						<p className="text-sm text-gray-500">Loading professors...</p>
-					</div>
-				) : professorsToDisplay.length > 0 ? (
-					professorsToDisplay.map((prof) => (
-						<button
-							key={prof.id}
-							onClick={() => handleProfessorClick(prof.id)}
-							aria-label={`View ${prof.first_name} ${prof.last_name}'s profile`}
-							className="w-full text-left bg-gray-50 border border-gray-100 rounded-md p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 hover:scale-[1.02] active:scale-[0.98]"
-						>
-							<div className="flex items-start gap-3">
-								<div className="w-12 h-12 rounded-full bg-blue-900 text-white flex items-center justify-center shrink-0 font-semibold text-sm">
-									{prof.initials}
-								</div>
-
-								<div className="min-w-0 flex-1">
-									<h3 className="font-semibold text-gray-800 text-sm">
-										{prof.first_name} {prof.last_name}
-									</h3>
-									<div className="mt-2 flex flex-wrap gap-1">
-										{prof.commonTags && prof.commonTags.length > 0 ? (
-											prof.commonTags.map((tag) => (
-												<span
-													key={tag}
-													className="inline-block text-xs bg-blue-100 text-blue-900 px-2 py-1 rounded-full"
-												>
-													{tag}
-												</span>
-											))
-										) : (
-											<span className="text-xs text-gray-400">No tags yet</span>
-										)}
-									</div>
-								</div>
-							</div>
-						</button>
-					))
-				) : searchQuery.trim() ? (
-					<div className="text-center py-8">
-						<p className="text-sm text-gray-500">
-							There is no professor with that name. Did you misspell it?
-						</p>
-					</div>
-				) : (
-					<div className="text-center py-8">
-						<p className="text-sm text-gray-500">No professors found</p>
-					</div>
-				)}
+				{renderProfessorContent()}
 			</div>
 		</div>
 	);
